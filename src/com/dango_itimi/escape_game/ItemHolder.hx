@@ -19,24 +19,32 @@ class ItemHolder
 		if(firedEvent.gottenItems != null)
 			addItems(firedEvent.gottenItems);
 	}
-	private function removeItems(removedItems:Array<Item>)
+	public function removeItems(removedItems:Array<Item>)
 	{
 		for (removedItem in removedItems)
 		{
-			var i = 0;
-			while(i < set.length)
-			{
-				var item = set[i];
-				if(item == removedItem){
-					set.splice(i, 1);
-					i--;
-				}
-				i++;
-			}
+			removeItem(removedItem);
 		}
 	}
-	private function addItems(gottenItems:Array<Item>)
+	public function removeItem(removedItem:Item)
+	{
+		var i = 0;
+		while(i < set.length)
+		{
+			var item = set[i];
+			if(item == removedItem){
+				set.splice(i, 1);
+				i--;
+			}
+			i++;
+		}
+	}
+	public function addItems(gottenItems:Array<Item>)
 	{
 		set = set.concat(gottenItems);
+	}
+	public function addItem(gottenItem:Item)
+	{
+		set.push(gottenItem);
 	}
 }
