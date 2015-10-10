@@ -1,0 +1,5 @@
+version=2.1.2
+src=src
+bin=build
+report=report
+hxml=test.hxml

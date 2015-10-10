@@ -1,0 +1,5 @@
+haxegame.game.event.GameBook
+-cp ./src
+-cp ../src/
+-neko neko_test.n
+--no-output

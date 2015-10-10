@@ -1,0 +1,17 @@
+Massive Unit - Copyright 2015 Massive Interactive. Version 2.1.2
+WARNING: Target type 'as3' not found in bin directory.
+WARNING: Target type 'as2' not found in bin directory.
+WARNING: Target type 'js' not found in bin directory.
+WARNING: Target type 'cpp' not found in bin directory.
+neko J:\workspace\LookForEquipment\trunk\munit\report\test-runner\neko_test.n
+
+MUnit Results
+Tests PASSED under neko using summary client
+------------------------------
+Class: haxegame.game.event.EventsTest .
+==============================
+PASSED
+Tests: 1  Passed: 1  Failed: 0 Errors: 0 Ignored: 0 Time: 0
+
+------------------------------
+PLATFORMS TESTED: 1, PASSED: 1, FAILED: 0, ERRORS: 0, TIME: 0.121
