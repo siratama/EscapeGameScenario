@@ -31,13 +31,10 @@ class Book
 		setExtendedStoryClassPackagesString();
 
 		var metaFieldSet = this.getMetaFieldsWithInstance(META_STORY);
-		for(metaField in metaFieldSet){
+		for(metaField in metaFieldSet)
+		{
 			var metaFieldName = metaField.name;
-			var smallFirstCharacter = metaFieldName.charAt(0);
-			var largeFirstCharacter = smallFirstCharacter.toUpperCase();
-			var storyClassName = largeFirstCharacter + metaFieldName.substring(1, metaFieldName.length);
-			var storyClassPath = extendedStoryClassPackagesString + "." + storyClassName;
-			var storyClass = Type.resolveClass(storyClassPath);
+			var storyClass = getStoryClass(metaFieldName);
 
 			var story:Story = Type.createInstance(storyClass, []);
 			stories.push(story);
@@ -55,6 +52,14 @@ class Book
 		var packages = Type.getClassName(baseClass).split(".");
 		packages.pop();
 		extendedStoryClassPackagesString = packages.join(".");
+	}
+	private function getStoryClass(metaFieldName:String)
+	{
+		var smallFirstCharacter = metaFieldName.charAt(0);
+		var largeFirstCharacter = smallFirstCharacter.toUpperCase();
+		var storyClassName = largeFirstCharacter + metaFieldName.substring(1, metaFieldName.length);
+		var storyClassPath = extendedStoryClassPackagesString + "." + storyClassName;
+		return Type.resolveClass(storyClassPath);
 	}
 	private function setStoryField(story:Story){}
 

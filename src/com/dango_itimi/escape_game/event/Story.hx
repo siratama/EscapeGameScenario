@@ -52,7 +52,7 @@ class Story
 	{
 		setDefaultEvent(event, hitArea, null, firedTexts);
 	}
-	private function setUnfiredEvent(event:Event, hitArea:Rectangle, ?checkedTexts:Array<String>)
+	private function setUnfiredEvent(event:Event, hitArea:Rectangle, checkedTexts:Array<String>)
 	{
 		event.unfired = true;
 		setDefaultEvent(event, hitArea, checkedTexts);
