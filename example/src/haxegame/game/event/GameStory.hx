@@ -24,6 +24,7 @@ class Story1 extends GameStory
 	@event public var table(default, null):Event;
 	@event public var bed(default, null):Event;
 	@event public var floor(default, null):Event;
+	@event public var box(default, null):Event;
 	@event public var window(default, null):Event;
 
 	override private function setEvent()
@@ -47,7 +48,17 @@ class Story1 extends GameStory
 			["This is a floor."], ["You got a shield."]
 		);
 		floor.requiredFinishEvents = [bed];
-		floor.gottenItems = [items.normalSield];
+		floor.gottenItems = [items.normalShield];
+
+		//
+		setDefault(
+			box, eventAreaSprite.table,
+			["This is a box."], ["You use a shield.", "You got a sword"]
+		);
+		box.requiredFinishEvents = [bed];
+		box.requiredItems = [items.normalShield];
+		box.removedItems = [items.normalShield];
+		box.gottenItems = [items.normalSword];
 
 		//
 		setUnfired(

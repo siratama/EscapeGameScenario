@@ -5,9 +5,9 @@ import com.dango_itimi.escape_game.item.Item;
 
 class Event
 {
-	public var requiredItems(null, set):Array<Item>;
-	public function set_requiredItems(requiredIems:Array<Item>):Array<Item>
-		return this.requiredItems = requiredIems;
+	public var requiredItems(default, set):Array<Item>;
+	public function set_requiredItems(requiredItems:Array<Item>):Array<Item>
+		return this.requiredItems = requiredItems;
 	
 	public var removedItems(default, set):Array<Item>;
 	public function set_removedItems(removedItems:Array<Item>):Array<Item>

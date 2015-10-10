@@ -26,6 +26,6 @@ class GameBook extends Book
 	}
 	override private function setBranch()
 	{
-		story1.floor.nextStory = story2;
+		story1.box.nextStory = story2;
 	}
 }

@@ -7,7 +7,7 @@ class GameItems extends Items
 		return instance == null ? instance = new GameItems(): instance;
 
 	@item public var normalSword(default, null):GameItem;
-	@item public var normalSield(default, null):GameItem;
+	@item public var normalShield(default, null):GameItem;
 
 	private function new()
 	{
@@ -15,6 +15,6 @@ class GameItems extends Items
 		super();
 
 		normalSword.initialize("Normal Sword");
-		normalSield.initialize("Normal Shield");
+		normalShield.initialize("Normal Shield");
 	}
 }

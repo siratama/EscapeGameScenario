@@ -87,16 +87,26 @@ class BookReaderTest
 		Assert.areEqual(firedEvent, gameBook.story1.bed);
 		Assert.isTrue(gameBook.story1.bed.finished);
 
+		//box
+		var firedEvent = bookReader.progress(TABLE_POSITION);
+		Assert.isNull(firedEvent);
+
 		//floor
 		var firedEvent = bookReader.progress(BED_POSITION);
 		Assert.isNotNull(firedEvent);
 		Assert.areEqual(firedEvent, gameBook.story1.floor);
 		Assert.isTrue(gameBook.story1.floor.finished);
 		itemHolder.changeItems(firedEvent);
-
 		Assert.areEqual(itemHolder.set.length, 1);
-		Assert.areEqual(itemHolder.set[0], gameItems.normalSield);
+		Assert.areEqual(itemHolder.set[0], gameItems.normalShield);
 
+		//box
+		var firedEvent = bookReader.progress(TABLE_POSITION);
+		Assert.areEqual(firedEvent, gameBook.story1.box);
+		Assert.isTrue(gameBook.story1.box.finished);
+		itemHolder.changeItems(firedEvent);
+		Assert.areEqual(itemHolder.set.length, 1);
+		Assert.areEqual(itemHolder.set[0], gameItems.normalSword);
 	}
 	private function testStory2()
 	{
