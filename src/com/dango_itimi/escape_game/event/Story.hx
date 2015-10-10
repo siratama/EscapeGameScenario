@@ -25,11 +25,11 @@ class Story
 		set = [];
 		areaMap = new Map();
 
-		createEvent();
+		createEventAuto();
 	}
 
 	//
-	private function createEvent()
+	private function createEventAuto()
 	{
 		if(autoCreationEventInstanceClass == null) autoCreationEventInstanceClass = Event;
 

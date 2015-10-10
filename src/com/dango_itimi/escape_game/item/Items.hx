@@ -18,9 +18,9 @@ class Items
 	public function new()
 	{
 		set = [];
-		createEvent();
+		createItemAuto();
 	}
-	public function createEvent()
+	public function createItemAuto()
 	{
 		if(autoCreationItemInstanceClass == null) autoCreationItemInstanceClass = Item;
 
