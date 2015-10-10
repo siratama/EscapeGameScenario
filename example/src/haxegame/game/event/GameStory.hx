@@ -30,20 +30,20 @@ class Story1 extends GameStory
 	override private function setEvent()
 	{
 		//
-		setUnqualifired(
+		setUnqualifiedEvent(
 			table, eventAreaSprite.table,
 			["The table is broken."]
 		);
 
 		//
-		setDefault(
+		setDefaultEvent(
 			bed, eventAreaSprite.bed,
 			["This is a bed."], ["The floor is broken."]
 		);
 		bed.requiredFinishEvents = [table];
 
 		//
-		setDefault(
+		setDefaultEvent(
 			floor, eventAreaSprite.bed,
 			["This is a floor."], ["You got a shield."]
 		);
@@ -51,7 +51,7 @@ class Story1 extends GameStory
 		floor.gottenItems = [items.normalShield];
 
 		//
-		setDefault(
+		setDefaultEvent(
 			box, eventAreaSprite.table,
 			["This is a box."], ["You use a shield.", "You got a sword"]
 		);
@@ -61,7 +61,7 @@ class Story1 extends GameStory
 		box.gottenItems = [items.normalSword];
 
 		//
-		setUnfired(
+		setUnfiredEvent(
 			window, eventAreaSprite.table,
 			["This is a mirror"]
 		);
@@ -77,16 +77,19 @@ class Story2 extends GameStory
 	override private function setEvent()
 	{
 		//
-		setUnqualifired(
+		setUnqualifiedEvent(
 			table, eventAreaSprite.table,
 			["The table is broken."]
 		);
-		setUnqualifired(
+
+		//
+		setUnqualifiedEvent(
 			mirror, eventAreaSprite.bed,
 			["The mirror is broken."]
 		);
 
-		setDefault(
+		//
+		setDefaultEvent(
 			box, eventAreaSprite.bed,
 			["This is a box."], ["The box is broken."]
 		);
@@ -102,11 +105,13 @@ class Story3 extends GameStory
 	override private function setEvent()
 	{
 		//
-		setUnqualifired(
+		setUnqualifiedEvent(
 			table, eventAreaSprite.table,
 			["This is a table."]
 		);
-		setDefault(
+
+		//
+		setDefaultEvent(
 			box, eventAreaSprite.bed,
 			["This is a box."], ["The box is broken."]
 		);

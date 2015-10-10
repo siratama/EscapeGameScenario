@@ -26,7 +26,10 @@ class Event
 	public var checkedTexts(default, null):Array<String>;
 	public var firedTexts(default, null):Array<String>;
 
-	public var unfired(default, null):Bool;
+	public var unfired(default, set):Bool;
+	public function set_unfired(unfired:Bool):Bool
+		return this.unfired = unfired;
+
 	public var enabled(default, null):Bool;
 	public var finished(default, null):Bool;
 
@@ -50,20 +53,10 @@ class Event
 		unfired = false;
 		finished = false;
 	}
-
-	public function initializeUnqualified(firedTexts:Array<String>)
-	{
-		this.firedTexts = firedTexts;
-	}
-	public function initialize(checkedTexts:Array<String>, firedTexts:Array<String>)
+	public function initialize(?checkedTexts:Array<String>, ?firedTexts:Array<String>)
 	{
 		this.checkedTexts = checkedTexts;
 		this.firedTexts = firedTexts;
-	}
-	public function initializeUnfired(checkedTexts:Array<String>)
-	{
-		this.checkedTexts = checkedTexts;
-		unfired = true;
 	}
 
 	public function isFired(ownItems:Array<Item>):Bool

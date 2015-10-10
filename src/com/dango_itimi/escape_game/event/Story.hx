@@ -45,27 +45,22 @@ class Story
 	public function initialize()
 	{
 		setEvent();
-
 	}
 	private function setEvent(){}
 
-	private function setUnqualifired(event:Event, hitArea:Rectangle, firedTexts:Array<String>)
+	private function setUnqualifiedEvent(event:Event, hitArea:Rectangle, ?firedTexts:Array<String>)
 	{
-		event.initializeUnqualified(firedTexts);
-		setAreaMap(event, hitArea);
+		setDefaultEvent(event, hitArea, null, firedTexts);
 	}
-	private function setDefault(event:Event, hitArea:Rectangle, checkedTexts:Array<String>, firedTexts:Array<String>)
+	private function setUnfiredEvent(event:Event, hitArea:Rectangle, ?checkedTexts:Array<String>)
+	{
+		event.unfired = true;
+		setDefaultEvent(event, hitArea, checkedTexts);
+	}
+	private function setDefaultEvent(event:Event, hitArea:Rectangle, ?checkedTexts:Array<String>, ?firedTexts:Array<String>)
 	{
 		event.initialize(checkedTexts, firedTexts);
-		setAreaMap(event, hitArea);
-	}
-	private function setUnfired(event:Event, hitArea:Rectangle, checkedTexts:Array<String>)
-	{
-		event.initializeUnfired(checkedTexts);
-		setAreaMap(event, hitArea);
-	}
-	private function setAreaMap(event:Event, hitArea:Rectangle)
-	{
+
 		if(areaMap[hitArea] == null) areaMap[hitArea] = [];
 		areaMap[hitArea].push(event);
 	}

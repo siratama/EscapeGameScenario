@@ -17,19 +17,19 @@ class Story1 extends Story
 		var rectangle2 = RectangleUtil.create(11, 0, 10, 10);
 
 		//
-		setUnqualifired(
+		setUnqualifiedEvent(
 			table, rectangle1,
 			["thank you"]
 		);
 
 		//
-		setUnfired(
+		setUnfiredEvent(
 			bed, rectangle2,
 			["ok"]
 		);
 
 		//
-		setDefault(
+		setDefaultEvent(
 			bed, rectangle2,
 			["good bye"], ["hello"]
 		);
