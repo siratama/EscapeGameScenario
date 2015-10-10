@@ -22,6 +22,8 @@ class Book
 		stories = [];
 
 		createStoryAuto();
+		checkStorySettingError();
+
 		setBranch();
 	}
 	private function createStoryAuto()
@@ -56,6 +58,14 @@ class Book
 	}
 	private function setStoryField(story:Story){}
 
+	private function checkStorySettingError()
+	{
+		for(story in stories){
+			story.checkOverlappingArea();
+			story.checkEventOrderError();
+		}
+	}
+
 	private function setBranch() {}
 
 	private function setReadingStory(story:Story)
@@ -73,6 +83,7 @@ class Book
 	{
 		readingStory.enable(false);
 		exchangedStory.setPriorityInAreaWithExchangedReading();
+		readingStory = exchangedStory;
 	}
 }
 

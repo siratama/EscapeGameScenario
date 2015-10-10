@@ -1,5 +1,21 @@
 haxegame.game.event.GameBook
 -cp ./src
 -cp ../src/
--neko neko_test.n
+-neko a.n
+--no-output
+
+--next
+
+haxegame.game.error_event.overlapping_area.GameBook
+-cp ./src
+-cp ../src/
+-neko a.n
+--no-output
+
+--next
+
+haxegame.game.error_event.event_order_error.GameBook
+-cp ./src
+-cp ../src/
+-neko a.n
 --no-output

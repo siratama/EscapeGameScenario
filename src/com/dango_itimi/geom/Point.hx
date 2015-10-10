@@ -7,9 +7,15 @@ typedef Point =
 	var y:Float;
 }
 
-class PointUtil{
-
-	public static inline function convert(pt:Point):Point{
+class PointUtil
+{
+	public static inline function xy(point:Point, x:Float, y:Float)
+	{
+		point.x = x;
+		point.y = y;
+	}
+	public static inline function convert(pt:Point):Point
+	{
 		return create(pt.x, pt.y);
 	}
 

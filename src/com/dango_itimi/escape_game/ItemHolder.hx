@@ -1,4 +1,5 @@
 package com.dango_itimi.escape_game;
+import com.dango_itimi.escape_game.event.Event;
 import com.dango_itimi.escape_game.item.Item;
 
 class ItemHolder
@@ -9,7 +10,16 @@ class ItemHolder
 	{
 		set = [];
 	}
-	public function removeItems(removedItems:Array<Item>)
+
+	public function changeItems(firedEvent:Event)
+	{
+		if(firedEvent.removedItems != null)
+			removeItems(firedEvent.removedItems);
+
+		if(firedEvent.gottenItems != null)
+			addItems(firedEvent.gottenItems);
+	}
+	private function removeItems(removedItems:Array<Item>)
 	{
 		for (removedItem in removedItems)
 		{
@@ -25,7 +35,7 @@ class ItemHolder
 			}
 		}
 	}
-	public function addItems(gottenItems:Array<Item>)
+	private function addItems(gottenItems:Array<Item>)
 	{
 		set = set.concat(gottenItems);
 	}

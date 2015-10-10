@@ -31,27 +31,28 @@ class Story1 extends GameStory
 		//
 		setUnqualifired(
 			table, eventAreaSprite.table,
-			["どこかで音がしました。"]
+			["The table is broken."]
 		);
 
 		//
 		setDefault(
 			bed, eventAreaSprite.bed,
-			["ベッドです。"], ["床で音がしました。"]
+			["This is a bed."], ["The floor is broken."]
 		);
 		bed.requiredFinishEvents = [table];
 
 		//
 		setDefault(
 			floor, eventAreaSprite.bed,
-			["床です。"], ["盾を手に入れた。"]
+			["This is a floor."], ["You got a shield."]
 		);
 		floor.requiredFinishEvents = [bed];
 		floor.gottenItems = [items.normalSield];
 
 		//
 		setUnfired(
-			window, eventAreaSprite.table, ["窓です。"]
+			window, eventAreaSprite.table,
+			["This is a mirror"]
 		);
 	}
 }
@@ -59,27 +60,45 @@ class Story1 extends GameStory
 class Story2 extends GameStory
 {
 	@event public var table(default, null):Event;
+	@event public var mirror(default, null):Event;
+	@event public var box(default, null):Event;
 
 	override private function setEvent()
 	{
 		//
 		setUnqualifired(
 			table, eventAreaSprite.table,
-			["なにもありません。"]
+			["The table is broken."]
 		);
+		setUnqualifired(
+			mirror, eventAreaSprite.bed,
+			["The mirror is broken."]
+		);
+
+		setDefault(
+			box, eventAreaSprite.bed,
+			["This is a box."], ["The box is broken."]
+		);
+		box.requiredFinishEvents = [table, mirror];
 	}
 }
 
 class Story3 extends GameStory
 {
 	@event public var table(default, null):Event;
+	@event public var box(default, null):Event;
 
 	override private function setEvent()
 	{
 		//
 		setUnqualifired(
 			table, eventAreaSprite.table,
-			["あいうえお"]
+			["This is a table."]
 		);
+		setDefault(
+			box, eventAreaSprite.bed,
+			["This is a box."], ["The box is broken."]
+		);
+		box.requiredFinishEvents = [table];
 	}
 }

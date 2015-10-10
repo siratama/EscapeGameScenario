@@ -45,6 +45,7 @@ class Story
 	public function initialize()
 	{
 		setEvent();
+
 	}
 	private function setEvent(){}
 
@@ -68,13 +69,36 @@ class Story
 		if(areaMap[hitArea] == null) areaMap[hitArea] = [];
 		areaMap[hitArea].push(event);
 	}
-	public function isOverlappingArea():Bool
+
+	//
+	public function checkOverlappingArea()
 	{
-		return false;
+		for (key in areaMap.keys())
+		{
+			var hitArea1:Rectangle = key;
+			for (key2 in areaMap.keys())
+			{
+				var hitArea2:Rectangle = key2;
+				if(hitArea1 == hitArea2) continue;
+				if(hitArea1.hitTestObject(hitArea2)){
+					throw "overlapping area: " + hitArea1 + ":" + hitArea2;
+				}
+			}
+		}
 	}
-	public function isEventOrderError():Bool
+	public function checkEventOrderError()
 	{
-		return false;
+		for (key in areaMap.keys())
+		{
+			var eventSet:Array<Event> = areaMap[key];
+			for (i in 0...eventSet.length)
+			{
+				var event = eventSet[i];
+				if(event.unfired && i < eventSet.length - 1){
+					throw "need to set unfired event at the end:" + event;
+				}
+			}
+		}
 	}
 
 	//

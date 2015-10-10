@@ -18,7 +18,6 @@ class Items
 	public function new()
 	{
 		set = [];
-
 		createEvent();
 	}
 	public function createEvent()
