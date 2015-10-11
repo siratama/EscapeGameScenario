@@ -48,19 +48,8 @@ class Story
 	}
 	private function setEvent(){}
 
-	private function setUnqualifiedEvent(event:Event, hitArea:Rectangle, ?firedTexts:Array<String>)
+	public function setAreaMap(event:Event, hitArea:Rectangle)
 	{
-		setDefaultEvent(event, hitArea, null, firedTexts);
-	}
-	private function setUnfiredEvent(event:Event, hitArea:Rectangle, checkedTexts:Array<String>)
-	{
-		event.unfired = true;
-		setDefaultEvent(event, hitArea, checkedTexts);
-	}
-	private function setDefaultEvent(event:Event, hitArea:Rectangle, ?checkedTexts:Array<String>, ?firedTexts:Array<String>)
-	{
-		event.initialize(checkedTexts, firedTexts);
-
 		if(areaMap[hitArea] == null) areaMap[hitArea] = [];
 		areaMap[hitArea].push(event);
 	}
@@ -89,7 +78,7 @@ class Story
 			for (i in 0...eventSet.length)
 			{
 				var event = eventSet[i];
-				if(event.unfired && i < eventSet.length - 1){
+				if(event.misfired && i < eventSet.length - 1){
 					throw "need to set unfired event at the end:" + event;
 				}
 			}

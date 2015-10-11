@@ -1,5 +1,6 @@
 package haxegame.game.event;
 
+import haxegame.game.event.EventOption;
 import com.dango_itimi.escape_game.event.Story;
 import com.dango_itimi.escape_game.event.Event;
 import haxegame.game.item.GameItems;
@@ -29,21 +30,12 @@ class Story1 extends GameStory
 
 	override private function setEvent()
 	{
-		//
-		setUnqualifiedEvent(
-			table, eventAreaSprite.table,
-			["The table is broken."]
-		);
+		setTable();
+		setBed();
 
+		/*
 		//
-		setDefaultEvent(
-			bed, eventAreaSprite.bed,
-			["This is a bed."], ["The floor is broken."]
-		);
-		bed.requiredFinishEvents = [table];
-
-		//
-		setDefaultEvent(
+		setAreaMap(
 			floor, eventAreaSprite.bed,
 			["This is a floor."], ["You got a shield."]
 		);
@@ -51,7 +43,7 @@ class Story1 extends GameStory
 		floor.gottenItems = [items.normalShield];
 
 		//
-		setDefaultEvent(
+		setAreaMap(
 			box, eventAreaSprite.table,
 			["This is a box."], ["You use a shield.", "You got a sword"]
 		);
@@ -61,10 +53,30 @@ class Story1 extends GameStory
 		box.gottenItems = [items.normalSword];
 
 		//
-		setUnfiredEvent(
+		setAreaMap(
 			window, eventAreaSprite.table,
 			["This is a mirror"]
 		);
+		window.setUnfired();
+		*/
+	}
+	private function setTable()
+	{
+		setAreaMap(table, eventAreaSprite.table);
+
+		var texts = new Texts();
+		texts.fired = ["The table is broken."];
+		table.option = EventOptionCreator.create(texts);
+	}
+	private function setBed()
+	{
+		setAreaMap(bed, eventAreaSprite.bed);
+		bed.requiredFinishEvents = [table];
+
+		var texts = new Texts();
+		texts.checked = ["This is a bed."];
+		texts.fired = ["The floor is broken."];
+		bed.option = EventOptionCreator.create(texts);
 	}
 }
 
@@ -76,24 +88,26 @@ class Story2 extends GameStory
 
 	override private function setEvent()
 	{
+		/*
 		//
-		setUnqualifiedEvent(
+		setAreaMap(
 			table, eventAreaSprite.table,
 			["The table is broken."]
 		);
 
 		//
-		setUnqualifiedEvent(
+		setAreaMap(
 			mirror, eventAreaSprite.bed,
 			["The mirror is broken."]
 		);
 
 		//
-		setDefaultEvent(
+		setAreaMap(
 			box, eventAreaSprite.bed,
 			["This is a box."], ["The box is broken."]
 		);
 		box.requiredFinishEvents = [table, mirror];
+		*/
 	}
 }
 
@@ -104,17 +118,19 @@ class Story3 extends GameStory
 
 	override private function setEvent()
 	{
+		/*
 		//
-		setUnqualifiedEvent(
+		setAreaMap(
 			table, eventAreaSprite.table,
 			["This is a table."]
 		);
 
 		//
-		setDefaultEvent(
+		setAreaMap(
 			box, eventAreaSprite.bed,
 			["This is a box."], ["The box is broken."]
 		);
 		box.requiredFinishEvents = [table];
+		*/
 	}
 }

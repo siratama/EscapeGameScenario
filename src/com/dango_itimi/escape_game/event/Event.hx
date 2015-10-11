@@ -3,73 +3,45 @@ package com.dango_itimi.escape_game.event;
 import com.dango_itimi.escape_game.event.Story;
 import com.dango_itimi.escape_game.item.Item;
 
+enum EventCondition
+{
+	FIRED;
+	MISFIRED(misfiredSetting:Bool, itemLack:Bool, unfinishedAllRequiredEvents:Bool);
+}
+
 class Event
 {
-	public var requiredItems(default, set):Array<Item>;
-	public function set_requiredItems(requiredItems:Array<Item>):Array<Item>
-		return this.requiredItems = requiredItems;
-	
-	public var removedItems(default, set):Array<Item>;
-	public function set_removedItems(removedItems:Array<Item>):Array<Item>
-		return this.removedItems = removedItems;
-	
-	public var gottenItems(default, set):Array<Item>;
-	public function set_gottenItems(gottenItems:Array<Item>):Array<Item>
-		return this.gottenItems = gottenItems;
-	
+	public var requiredItems:Array<Item>;
+	public var removedItems:Array<Item>;
+	public var gottenItems:Array<Item>;
+	public var requiredFinishEvents:Array<Event>;
 
-	public var requiredFinishEvents(null, set):Array<Event>;
-	public function set_requiredFinishEvents(requiredFinishEvents:Array<Event>):Array<Event>
-		return this.requiredFinishEvents = requiredFinishEvents;
-	
-
-	public var checkedTexts(default, null):Array<String>;
-	public var firedTexts(default, null):Array<String>;
-
-	public var unfired(default, set):Bool;
-	public function set_unfired(unfired:Bool):Bool
-		return this.unfired = unfired;
-
+	public var misfired:Bool;
 	public var enabled(default, null):Bool;
 	public var finished(default, null):Bool;
 
-	public var lasted(default, set):Bool;
-	public function set_lasted(lasted:Bool):Bool
-		return this.lasted = lasted;
-
-	public var nextStory(default, set):Story;
-	public function set_nextStory(nextStory:Story):Story
-		return this.nextStory = nextStory;
-
+	public var nextStory:Story;
 	public function isBranched():Bool
 		return nextStory != null;
 
-	public var option(default, set):Dynamic;
-	public function set_option(option:Dynamic):Dynamic
-		return this.option = option;
+	public var option:Dynamic;
 
 	public function new(){
 		enabled = false;
-		unfired = false;
+		misfired = false;
 		finished = false;
 	}
-	public function initialize(?checkedTexts:Array<String>, ?firedTexts:Array<String>)
+	public function getCondision(ownItems:Array<Item>):EventCondition
 	{
-		this.checkedTexts = checkedTexts;
-		this.firedTexts = firedTexts;
+		var itemLack = !isRequiredItemsOwner(ownItems);
+		var unfinishedAllRequiredEvents = !isFinishedAllRequiredEvents();
+
+		if(misfired || itemLack || unfinishedAllRequiredEvents)
+			return EventCondition.MISFIRED(misfired, itemLack, unfinishedAllRequiredEvents);
+
+		return EventCondition.FIRED;
 	}
-
-	public function isFired(ownItems:Array<Item>):Bool
-	{
-		if(unfired) return false;
-		if(finished) return false;
-
-		var result = isReqiredItemsOwner(ownItems);
-		if(!result) return false;
-
-		return isFinishedAllReairedEvents();
-	}
-	private function isReqiredItemsOwner(ownItems:Array<Item>):Bool
+	private function isRequiredItemsOwner(ownItems:Array<Item>):Bool
 	{
 		if(requiredItems == null) return true;
 
@@ -87,7 +59,7 @@ class Event
 		}
 		return true;
 	}
-	private function isFinishedAllReairedEvents():Bool
+	private function isFinishedAllRequiredEvents():Bool
 	{
 		if(requiredFinishEvents == null) return true;
 
