@@ -8,7 +8,7 @@ enum Progress
 {
 	NO_HITAREA;
 	NO_ENABLED_EVENT;
-	UNFIRED(misfiredEvent:Event, misfiredSetting:Bool, itemLack:Bool, unfinishedAllRequiredEvents:Bool);
+	MISFIRED(misfiredEvent:Event, misfiredSetting:Bool, itemLack:Bool, unfinishedAllRequiredEvents:Bool);
 	NEXT(firedEvent:Event);
 }
 
@@ -22,8 +22,6 @@ class BookReader
 		this.book = book;
 		this.itemHolder = itemHolder;
 	}
-
-	//@return fired event
 	public function progress(checkPosition:Point):Progress
 	{
 		var readingStory = book.readingStory;
@@ -40,7 +38,7 @@ class BookReader
 		switch(eventCondition){
 
 			case EventCondition.MISFIRED(misfired, itemLack, unfinishedAllRequiredEvents):
-				return Progress.UNFIRED(event, misfired, itemLack, unfinishedAllRequiredEvents);
+				return Progress.MISFIRED(event, misfired, itemLack, unfinishedAllRequiredEvents);
 
 			case EventCondition.FIRED:
 			

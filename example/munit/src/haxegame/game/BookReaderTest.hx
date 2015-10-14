@@ -63,112 +63,104 @@ class BookReaderTest
 	public function testStory():Void
 	{
 		testStory1();
-		//testStory2();
-		//testStoryExchange();
+		testStory2();
+		testStoryExchange();
 	}
 	private function testStory1():Void
 	{
-		//bed
+		//bed unfinished all required events
 		switch(bookReader.progress(BED_POSITION)){
-			case Progress.UNFIRED(event, unfired, itemLack, unfinishedAllRequiredEvents):
+			case Progress.MISFIRED(event, misfired, itemLack, unfinishedAllRequiredEvents):
 				Assert.areEqual(event, gameBook.story1.bed);
-				Assert.isTrue(!unfired && !itemLack && unfinishedAllRequiredEvents);
+				Assert.isTrue(!misfired && !itemLack && unfinishedAllRequiredEvents);
 			case _: Assert.isTrue(false);
 		}
 
-
-		/*
-		switch(progress){
-			case Progress.UNFIRED(event, unfired, itemLack, unfinishedAllRequiredEvents):
-				Assert.areEqual(event, gameBook.story1.bed);
-				Assert.isTrue(!unfired && !itemLack && unfinishedAllRequiredEvents);
+		//out position
+		switch(bookReader.progress(OUT_POSITION)){
+			case Progress.NO_HITAREA: Assert.isTrue(true);
 			case _: Assert.isTrue(false);
 		}
-		*/
 
-		//Assert.areEqual(progress, Progress.UNFIRED)
+		//table fire
+		switch(bookReader.progress(TABLE_POSITION)){
+			case Progress.NEXT(event):
+				Assert.areEqual(event, gameBook.story1.table);
+				Assert.isTrue(gameBook.story1.table.finished);
+			case _: Assert.isTrue(false);
+		}
 
-		/*
-		//table
-		var progress = bookReader.progress(OUT_POSITION);
-		Assert.isNull(progress);
+		//bed fire
+		switch(bookReader.progress(BED_POSITION)){
+			case Progress.NEXT(event): Assert.areEqual(event, gameBook.story1.bed);
+			case _: Assert.isTrue(false);
+		}
 
-		var progress = bookReader.progress(TABLE_POSITION);
-		Assert.isNotNull(progress);
-		Assert.areEqual(progress, gameBook.story1.table);
-		Assert.isTrue(gameBook.story1.table.finished);
+		//box is lacked item
+		switch(bookReader.progress(TABLE_POSITION)){
+			case Progress.MISFIRED(event, misfired, itemLack, unfinishedAllRequiredEvents):
+				Assert.areEqual(event, gameBook.story1.box);
+				Assert.isTrue(!misfired && itemLack && !unfinishedAllRequiredEvents);
+			case _: Assert.isTrue(false);
+		}
 
-		//bed
-		var progress = bookReader.progress(BED_POSITION);
-		Assert.isNotNull(progress);
-		Assert.areEqual(progress, gameBook.story1.bed);
-		Assert.isTrue(gameBook.story1.bed.finished);
+		//floor fire
+		switch(bookReader.progress(BED_POSITION)){
+			case Progress.NEXT(event):
+				Assert.areEqual(event, gameBook.story1.floor);
 
-		//box
-		var progress = bookReader.progress(TABLE_POSITION);
-		Assert.isNull(progress);
+				itemHolder.changeItems(event);
+				Assert.areEqual(itemHolder.set.length, 1);
+				Assert.areEqual(itemHolder.set[0], gameItems.normalShield);
+			case _: Assert.isTrue(false);
+		}
 
-		//floor
-		var progress = bookReader.progress(BED_POSITION);
-		Assert.isNotNull(progress);
-		Assert.areEqual(progress, gameBook.story1.floor);
-		Assert.isTrue(gameBook.story1.floor.finished);
-		itemHolder.changeItems(progress);
-		Assert.areEqual(itemHolder.set.length, 1);
-		Assert.areEqual(itemHolder.set[0], gameItems.normalShield);
+		//box fire
+		switch(bookReader.progress(TABLE_POSITION)){
+			case Progress.NEXT(event):
+				Assert.areEqual(event, gameBook.story1.box);
 
-		//box
-		var progress = bookReader.progress(TABLE_POSITION);
-		Assert.areEqual(progress, gameBook.story1.box);
-		Assert.isTrue(gameBook.story1.box.finished);
-		itemHolder.changeItems(progress);
-		Assert.areEqual(itemHolder.set.length, 1);
-		Assert.areEqual(itemHolder.set[0], gameItems.normalSword);
-		*/
+				itemHolder.changeItems(event);
+				Assert.areEqual(itemHolder.set.length, 1);
+				Assert.areEqual(itemHolder.set[0], gameItems.normalSword);
+			case _: Assert.isTrue(false);
+		}
 	}
-	/*
 	private function testStory2()
 	{
-		//
-		//branch
-		//
+		//auto branch to story2
 		Assert.areEqual(gameBook.readingStory, gameBook.story2);
 
 		//mirror
-		var progress = bookReader.progress(BED_POSITION);
-		Assert.areEqual(progress, gameBook.story2.mirror);
+		switch(bookReader.progress(BED_POSITION)){
+			case Progress.NEXT(event): Assert.areEqual(event, gameBook.story2.mirror);
+			case _: Assert.isTrue(false);
+		}
 
 		//table
-		var progress = bookReader.progress(TABLE_POSITION);
-		Assert.areEqual(progress, gameBook.story2.table);
+		switch(bookReader.progress(TABLE_POSITION)){
+			case Progress.NEXT(event): Assert.areEqual(event, gameBook.story2.table);
+			case _: Assert.isTrue(false);
+		}
 	}
 	private function testStoryExchange()
 	{
-		//
 		//exchange to story3
-		//
 		gameBook.exchangeReadingStory(gameBook.story3);
 
-		//story2 box
-		var progress = bookReader.progress(BED_POSITION);
-		Assert.isNull(progress);
+		//story3 table fire
+		switch(bookReader.progress(TABLE_POSITION)){
+			case Progress.NEXT(event): Assert.areEqual(event, gameBook.story3.table);
+			case _: Assert.isTrue(false);
+		}
 
-		//story3 table
-		var progress = bookReader.progress(TABLE_POSITION);
-		Assert.areEqual(progress, gameBook.story3.table);
-
-		//
 		//exchange to story2
-		//
 		gameBook.exchangeReadingStory(gameBook.story2);
 
-		//story2 box
-		var progress = bookReader.progress(BED_POSITION);
-		Assert.areEqual(progress, gameBook.story2.box);
-
-		//story3 box
-		var progress = bookReader.progress(BED_POSITION);
-		Assert.isNull(progress);
+		//story2 box fire
+		switch(bookReader.progress(BED_POSITION)){
+			case Progress.NEXT(event): Assert.areEqual(event, gameBook.story2.box);
+			case _: Assert.isTrue(false);
+		}
 	}
-	*/
 }

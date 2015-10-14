@@ -1,17 +1,17 @@
 Massive Unit - Copyright 2015 Massive Interactive. Version 2.1.2
-WARNING: Target type 'as3' not found in bin directory.
-WARNING: Target type 'as2' not found in bin directory.
-WARNING: Target type 'js' not found in bin directory.
-WARNING: Target type 'cpp' not found in bin directory.
-neko J:\workspace\LookForEquipment\trunk\munit\report\test-runner\neko_test.n
+   haxe -main TestMain -lib munit -lib hamcrest -cp src -cp ../src/ -cp ../../src -neko build/neko_test.n
+neko C:\googledrive\workspace\EscapeGameScenario\trunk\example\munit\report\test-runner\neko_test.n
 
 MUnit Results
-Tests PASSED under neko using summary client
+Tests FAILED under neko using summary client
 ------------------------------
-Class: haxegame.game.event.EventsTest .
+Class: haxegame.game.BookReaderTest .!
+    FAIL: massive.munit.AssertionException: Expected TRUE but was [false] at haxegame.game.BookReaderTest#testStory1 (79)
+Class: haxegame.game.error_event.event_order_error.GameBookTest .
+Class: haxegame.game.error_event.overlapping_area.GameBookTest .
 ==============================
-PASSED
-Tests: 1  Passed: 1  Failed: 0 Errors: 0 Ignored: 0 Time: 0
+FAILED
+Tests: 4  Passed: 3  Failed: 1 Errors: 0 Ignored: 0 Time: 0.001
 
 ------------------------------
-PLATFORMS TESTED: 1, PASSED: 1, FAILED: 0, ERRORS: 0, TIME: 0.121
+PLATFORMS TESTED: 1, PASSED: 0, FAILED: 1, ERRORS: 0, TIME: 0.142

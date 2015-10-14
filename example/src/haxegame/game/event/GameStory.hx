@@ -32,33 +32,9 @@ class Story1 extends GameStory
 	{
 		setTable();
 		setBed();
-
-		/*
-		//
-		setAreaMap(
-			floor, eventAreaSprite.bed,
-			["This is a floor."], ["You got a shield."]
-		);
-		floor.requiredFinishEvents = [bed];
-		floor.gottenItems = [items.normalShield];
-
-		//
-		setAreaMap(
-			box, eventAreaSprite.table,
-			["This is a box."], ["You use a shield.", "You got a sword"]
-		);
-		box.requiredFinishEvents = [bed];
-		box.requiredItems = [items.normalShield];
-		box.removedItems = [items.normalShield];
-		box.gottenItems = [items.normalSword];
-
-		//
-		setAreaMap(
-			window, eventAreaSprite.table,
-			["This is a mirror"]
-		);
-		window.setUnfired();
-		*/
+		setFloor();
+		setBox();
+		setWindow();
 	}
 	private function setTable()
 	{
@@ -78,6 +54,25 @@ class Story1 extends GameStory
 		texts.fired = ["The floor is broken."];
 		bed.option = EventOptionCreator.create(texts);
 	}
+	private function setFloor()
+	{
+		setAreaMap(floor, eventAreaSprite.bed);
+		floor.requiredFinishEvents = [bed];
+		floor.gottenItems = [items.normalShield];
+	}
+	private function setBox()
+	{
+		setAreaMap(box, eventAreaSprite.table);
+		box.requiredFinishEvents = [bed];
+		box.requiredItems = [items.normalShield];
+		box.removedItems = [items.normalShield];
+		box.gottenItems = [items.normalSword];
+	}
+	private function setWindow()
+	{
+		setAreaMap(window, eventAreaSprite.table);
+		window.misfired = true;
+	}
 }
 
 class Story2 extends GameStory
@@ -88,26 +83,11 @@ class Story2 extends GameStory
 
 	override private function setEvent()
 	{
-		/*
-		//
-		setAreaMap(
-			table, eventAreaSprite.table,
-			["The table is broken."]
-		);
+		setAreaMap(table, eventAreaSprite.table);
+		setAreaMap(mirror, eventAreaSprite.bed);
 
-		//
-		setAreaMap(
-			mirror, eventAreaSprite.bed,
-			["The mirror is broken."]
-		);
-
-		//
-		setAreaMap(
-			box, eventAreaSprite.bed,
-			["This is a box."], ["The box is broken."]
-		);
+		setAreaMap(box, eventAreaSprite.bed);
 		box.requiredFinishEvents = [table, mirror];
-		*/
 	}
 }
 
@@ -118,19 +98,9 @@ class Story3 extends GameStory
 
 	override private function setEvent()
 	{
-		/*
-		//
-		setAreaMap(
-			table, eventAreaSprite.table,
-			["This is a table."]
-		);
+		setAreaMap(table, eventAreaSprite.table);
 
-		//
-		setAreaMap(
-			box, eventAreaSprite.bed,
-			["This is a box."], ["The box is broken."]
-		);
+		setAreaMap(box, eventAreaSprite.bed);
 		box.requiredFinishEvents = [table];
-		*/
 	}
 }

@@ -31,7 +31,6 @@ class GameBookTest
 	@Test
 	public function testOverlappingArea():Void
 	{
-		/*
 		try{
 			var gameBook = new GameBook();
 			Assert.isTrue(false);
@@ -40,6 +39,5 @@ class GameBookTest
 			trace(error);
 			Assert.isTrue(true);
 		}
-		*/
 	}
 }

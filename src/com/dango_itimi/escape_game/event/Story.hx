@@ -79,7 +79,7 @@ class Story
 			{
 				var event = eventSet[i];
 				if(event.misfired && i < eventSet.length - 1){
-					throw "need to set unfired event at the end:" + event;
+					throw "need to set misfired event at the end:" + event;
 				}
 			}
 		}

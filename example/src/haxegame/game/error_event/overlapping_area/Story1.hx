@@ -17,19 +17,8 @@ class Story1 extends Story
 		var rectangle1 = RectangleUtil.create(0, 0, 10, 10);
 		var rectangle2 = RectangleUtil.create(10, 0, 10, 10);
 
-		/*
-		//
-		setUnqualifiedEvent(
-			table, rectangle1,
-			["thank you"]
-		);
-
-		//
-		setDefaultEvent(
-			bed, rectangle2,
-			["good bye"], ["hello"]
-		);
-		*/
+		setAreaMap(table, rectangle1);
+		setAreaMap(bed, rectangle2);
 	}
 }
 
