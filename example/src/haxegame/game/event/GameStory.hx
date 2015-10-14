@@ -7,17 +7,8 @@ import haxegame.game.item.GameItems;
 
 class GameStory extends Story
 {
-	public var eventAreaSprite(null, set):EventAreaSprite;
-	public function set_eventAreaSprite(eventAreaSprite:EventAreaSprite):EventAreaSprite
-		return this.eventAreaSprite = eventAreaSprite;
-
-	private var items:GameItems;
-
-	public function new()
-	{
-		items = GameItems.instance;
-		super();
-	}
+	public var eventAreaSprite(null, default):EventAreaSprite;
+	public var items(null, default):GameItems;
 }
 
 class Story1 extends GameStory
