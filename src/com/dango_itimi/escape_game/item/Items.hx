@@ -26,9 +26,9 @@ class Items
 
 		var metaFieldSet = this.getMetaFieldsWithInstance(META_ITEM);
 		for(metaField in metaFieldSet){
-			var event = Type.createInstance(autoCreationItemInstanceClass, []);
-			set.push(event);
-			Reflect.setProperty(this, metaField.name, event);
+			var item = Type.createInstance(autoCreationItemInstanceClass, []);
+			set.push(item);
+			Reflect.setProperty(this, metaField.name, item);
 		}
 	}
 }
