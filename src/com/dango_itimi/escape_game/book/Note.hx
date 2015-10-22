@@ -1,13 +1,13 @@
-package com.dango_itimi.escape_game.event;
+package com.dango_itimi.escape_game.book;
 
 import com.dango_itimi.geom.Point;
 import com.dango_itimi.geom.Rectangle;
-import com.dango_itimi.escape_game.event.Event;
+import com.dango_itimi.escape_game.book.Event;
 
 using com.dango_itimi.utils.MetaUtil;
 using com.dango_itimi.geom.Rectangle.RectangleUtil;
 
-class Story
+class Note
 {
 	public static inline var META_EVENT = "event";
 	private var autoCreationEventInstanceClass:Class<Event>;
@@ -42,12 +42,6 @@ class Story
 	}
 
 	//
-	public function initialize()
-	{
-		setEvent();
-	}
-	private function setEvent(){}
-
 	public function setAreaMap(event:Event, hitArea:Rectangle)
 	{
 		if(areaMap[hitArea] == null) areaMap[hitArea] = [];

@@ -1,8 +1,8 @@
 import massive.munit.TestSuite;
 
-import haxegame.game.BookReaderTest;
-import haxegame.game.error_event.event_order_error.GameBookTest;
-import haxegame.game.error_event.overlapping_area.GameBookTest;
+import haxegame.game.ReaderTest;
+import haxegame.game.scenario_error.event_order_error.EventOrderErrorTest;
+import haxegame.game.scenario_error.overlapping_area.OverlappingAreaTest;
 
 /**
  * Auto generated Test Suite for MassiveUnit.
@@ -16,8 +16,8 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
-		add(haxegame.game.BookReaderTest);
-		add(haxegame.game.error_event.event_order_error.GameBookTest);
-		add(haxegame.game.error_event.overlapping_area.GameBookTest);
+		add(haxegame.game.ReaderTest);
+		add(haxegame.game.scenario_error.event_order_error.EventOrderErrorTest);
+		add(haxegame.game.scenario_error.overlapping_area.OverlappingAreaTest);
 	}
 }

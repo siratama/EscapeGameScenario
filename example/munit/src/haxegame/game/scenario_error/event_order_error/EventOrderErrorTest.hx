@@ -1,8 +1,10 @@
-package haxegame.game.error_event.overlapping_area;
+package haxegame.game.scenario_error.event_order_error;
 
+import haxegame.game.scenario_error.event_order_error.Story.Story1;
+import haxegame.game.scenario_error.event_order_error.Novel;
 import massive.munit.Assert;
 
-class GameBookTest
+class EventOrderErrorTest
 {
 	public function new()
 	{
@@ -31,8 +33,13 @@ class GameBookTest
 	@Test
 	public function testOverlappingArea():Void
 	{
+		var novel = new Novel();
+		var story = new Story1();
+		story.writtenNote = novel.note1;
+		story.write();
+
 		try{
-			var gameBook = new GameBook();
+			novel.checkSettingError();
 			Assert.isTrue(false);
 		}
 		catch(error:String){

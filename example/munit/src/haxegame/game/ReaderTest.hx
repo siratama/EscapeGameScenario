@@ -1,21 +1,23 @@
 package haxegame.game;
 
-import haxegame.game.event.GameBook;
+import haxegame.game.scenario.Writer;
+import haxegame.game.scenario.Novel;
 import haxegame.game.item.GameItems;
 import com.dango_itimi.escape_game.ItemHolder;
-import com.dango_itimi.escape_game.event.Event;
+import com.dango_itimi.escape_game.book.Event;
 import com.dango_itimi.geom.Point;
-import com.dango_itimi.escape_game.BookReader;
+import com.dango_itimi.escape_game.Reader;
 import massive.munit.Assert;
 
 using com.dango_itimi.geom.Point.PointUtil;
 
-class BookReaderTest
+class ReaderTest
 {
-	private var gameBook:GameBook;
+	private var writer:Writer;
+	private var novel:Novel;
 	private var itemHolder:ItemHolder;
 	private var gameItems:GameItems;
-	private var bookReader:BookReader;
+	private var reader:Reader;
 
 	private static var TABLE_POSITION = PointUtil.create(0, 0);
 	private static var BED_POSITION = PointUtil.create(2, 0);
@@ -40,9 +42,10 @@ class BookReaderTest
 	@Before
 	public function setup():Void
 	{
-		gameBook = new GameBook();
+		writer = new Writer();
+		novel = writer.novel;
 		itemHolder = new ItemHolder();
-		bookReader = new BookReader(gameBook, itemHolder);
+		reader = new Reader(novel, itemHolder);
 	}
 
 	@After
@@ -53,10 +56,10 @@ class BookReaderTest
 	@Test
 	public function testBranchStoryIsNotFired():Void
 	{
-		bookReader.progress(TABLE_POSITION);
-		Assert.isFalse(gameBook.story2.table.finished);
-		Assert.isFalse(gameBook.story3.table.finished);
-		Assert.isTrue(gameBook.story1.table.finished);
+		reader.progress(TABLE_POSITION);
+		Assert.isFalse(novel.note2.table.finished);
+		Assert.isFalse(novel.note3.table.finished);
+		Assert.isTrue(novel.note1.table.finished);
 	}
 
 	@Test
@@ -69,45 +72,45 @@ class BookReaderTest
 	private function testStory1():Void
 	{
 		//bed unfinished all required events
-		switch(bookReader.progress(BED_POSITION)){
+		switch(reader.progress(BED_POSITION)){
 			case Progress.MISFIRED(event, misfired, itemLack, unfinishedAllRequiredEvents):
-				Assert.areEqual(event, gameBook.story1.bed);
+				Assert.areEqual(event, novel.note1.bed);
 				Assert.isTrue(!misfired && !itemLack && unfinishedAllRequiredEvents);
 			case _: Assert.isTrue(false);
 		}
 
 		//out position
-		switch(bookReader.progress(OUT_POSITION)){
+		switch(reader.progress(OUT_POSITION)){
 			case Progress.NO_HITAREA: Assert.isTrue(true);
 			case _: Assert.isTrue(false);
 		}
 
 		//table fire
-		switch(bookReader.progress(TABLE_POSITION)){
+		switch(reader.progress(TABLE_POSITION)){
 			case Progress.NEXT(event):
-				Assert.areEqual(event, gameBook.story1.table);
-				Assert.isTrue(gameBook.story1.table.finished);
+				Assert.areEqual(event, novel.note1.table);
+				Assert.isTrue(novel.note1.table.finished);
 			case _: Assert.isTrue(false);
 		}
 
 		//bed fire
-		switch(bookReader.progress(BED_POSITION)){
-			case Progress.NEXT(event): Assert.areEqual(event, gameBook.story1.bed);
+		switch(reader.progress(BED_POSITION)){
+			case Progress.NEXT(event): Assert.areEqual(event, novel.note1.bed);
 			case _: Assert.isTrue(false);
 		}
 
 		//box is lacked item
-		switch(bookReader.progress(TABLE_POSITION)){
+		switch(reader.progress(TABLE_POSITION)){
 			case Progress.MISFIRED(event, misfired, itemLack, unfinishedAllRequiredEvents):
-				Assert.areEqual(event, gameBook.story1.box);
+				Assert.areEqual(event, novel.note1.box);
 				Assert.isTrue(!misfired && itemLack && !unfinishedAllRequiredEvents);
 			case _: Assert.isTrue(false);
 		}
 
 		//floor fire
-		switch(bookReader.progress(BED_POSITION)){
+		switch(reader.progress(BED_POSITION)){
 			case Progress.NEXT(event):
-				Assert.areEqual(event, gameBook.story1.floor);
+				Assert.areEqual(event, novel.note1.floor);
 
 				itemHolder.changeItems(event);
 				Assert.areEqual(itemHolder.set.length, 1);
@@ -116,9 +119,9 @@ class BookReaderTest
 		}
 
 		//box fire
-		switch(bookReader.progress(TABLE_POSITION)){
+		switch(reader.progress(TABLE_POSITION)){
 			case Progress.NEXT(event):
-				Assert.areEqual(event, gameBook.story1.box);
+				Assert.areEqual(event, novel.note1.box);
 
 				itemHolder.changeItems(event);
 				Assert.areEqual(itemHolder.set.length, 1);
@@ -129,37 +132,37 @@ class BookReaderTest
 	private function testStory2()
 	{
 		//auto branch to story2
-		Assert.areEqual(gameBook.readingStory, gameBook.story2);
+		Assert.areEqual(novel.readingNote, novel.note2);
 
 		//mirror
-		switch(bookReader.progress(BED_POSITION)){
-			case Progress.NEXT(event): Assert.areEqual(event, gameBook.story2.mirror);
+		switch(reader.progress(BED_POSITION)){
+			case Progress.NEXT(event): Assert.areEqual(event, novel.note2.mirror);
 			case _: Assert.isTrue(false);
 		}
 
 		//table
-		switch(bookReader.progress(TABLE_POSITION)){
-			case Progress.NEXT(event): Assert.areEqual(event, gameBook.story2.table);
+		switch(reader.progress(TABLE_POSITION)){
+			case Progress.NEXT(event): Assert.areEqual(event, novel.note2.table);
 			case _: Assert.isTrue(false);
 		}
 	}
 	private function testStoryExchange()
 	{
 		//exchange to story3
-		gameBook.exchangeReadingStory(gameBook.story3);
+		novel.exchangeReadingNote(novel.note3);
 
 		//story3 table fire
-		switch(bookReader.progress(TABLE_POSITION)){
-			case Progress.NEXT(event): Assert.areEqual(event, gameBook.story3.table);
+		switch(reader.progress(TABLE_POSITION)){
+			case Progress.NEXT(event): Assert.areEqual(event, novel.note3.table);
 			case _: Assert.isTrue(false);
 		}
 
 		//exchange to story2
-		gameBook.exchangeReadingStory(gameBook.story2);
+		novel.exchangeReadingNote(novel.note2);
 
 		//story2 box fire
-		switch(bookReader.progress(BED_POSITION)){
-			case Progress.NEXT(event): Assert.areEqual(event, gameBook.story2.box);
+		switch(reader.progress(BED_POSITION)){
+			case Progress.NEXT(event): Assert.areEqual(event, novel.note2.box);
 			case _: Assert.isTrue(false);
 		}
 	}

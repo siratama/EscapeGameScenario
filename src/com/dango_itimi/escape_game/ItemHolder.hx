@@ -1,5 +1,5 @@
 package com.dango_itimi.escape_game;
-import com.dango_itimi.escape_game.event.Event;
+import com.dango_itimi.escape_game.book.Event;
 import com.dango_itimi.escape_game.item.Item;
 
 class ItemHolder

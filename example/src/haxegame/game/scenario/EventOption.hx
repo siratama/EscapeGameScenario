@@ -1,4 +1,4 @@
-package haxegame.game.event;
+package haxegame.game.scenario;
 typedef EventOption =
 {
 	var texts:Texts;

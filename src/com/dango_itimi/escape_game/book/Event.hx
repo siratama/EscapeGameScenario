@@ -1,6 +1,6 @@
-package com.dango_itimi.escape_game.event;
+package com.dango_itimi.escape_game.book;
 
-import com.dango_itimi.escape_game.event.Story;
+import com.dango_itimi.escape_game.book.Note;
 import com.dango_itimi.escape_game.item.Item;
 
 enum EventCondition
@@ -20,7 +20,7 @@ class Event
 	public var enabled(default, null):Bool;
 	public var finished(default, null):Bool;
 
-	public var nextStory:Story;
+	public var nextStory:Note;
 	public function isBranched():Bool
 		return nextStory != null;
 

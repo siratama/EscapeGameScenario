@@ -1,4 +1,4 @@
-haxegame.game.event.GameBook
+haxegame.game.scenario.Writer
 -cp ./src
 -cp ../src/
 -neko a.n
@@ -6,7 +6,7 @@ haxegame.game.event.GameBook
 
 --next
 
-haxegame.game.error_event.overlapping_area.GameBook
+haxegame.game.scenario_error.overlapping_area.Story
 -cp ./src
 -cp ../src/
 -neko a.n
@@ -14,7 +14,7 @@ haxegame.game.error_event.overlapping_area.GameBook
 
 --next
 
-haxegame.game.error_event.event_order_error.GameBook
+haxegame.game.scenario_error.event_order_error.Story
 -cp ./src
 -cp ../src/
 -neko a.n

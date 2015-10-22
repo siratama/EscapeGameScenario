@@ -1,7 +1,7 @@
 package com.dango_itimi.escape_game;
 
-import com.dango_itimi.escape_game.event.Book;
-import com.dango_itimi.escape_game.event.Event;
+import com.dango_itimi.escape_game.book.Book;
+import com.dango_itimi.escape_game.book.Event;
 import com.dango_itimi.geom.Point;
 
 enum Progress
@@ -12,7 +12,7 @@ enum Progress
 	NEXT(firedEvent:Event);
 }
 
-class BookReader
+class Reader
 {
 	private var book:Book;
 	private var itemHolder:ItemHolder;
@@ -24,7 +24,7 @@ class BookReader
 	}
 	public function progress(checkPosition:Point):Progress
 	{
-		var readingStory = book.readingStory;
+		var readingStory = book.readingNote;
 
 		var hitArea = readingStory.getHitArea(checkPosition);
 		if(hitArea == null)
@@ -46,7 +46,7 @@ class BookReader
 				if(!event.isBranched())
 					readingStory.setNextPriorityInArea(hitArea);
 				else
-					book.branchReadingStory(event.nextStory);
+					book.branchReadingNote(event.nextStory);
 
 				return Progress.NEXT(event);
 		}

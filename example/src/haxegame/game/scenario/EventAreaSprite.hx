@@ -1,4 +1,4 @@
-package haxegame.game.event;
+package haxegame.game.scenario;
 
 import com.dango_itimi.geom.Rectangle;
 using com.dango_itimi.utils.MetaUtil;
