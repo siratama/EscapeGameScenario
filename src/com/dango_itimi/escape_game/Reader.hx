@@ -1,5 +1,6 @@
 package com.dango_itimi.escape_game;
 
+import com.dango_itimi.escape_game.book.Note;
 import com.dango_itimi.escape_game.book.Book;
 import com.dango_itimi.escape_game.book.Event;
 import com.dango_itimi.geom.Point;
@@ -10,6 +11,16 @@ enum Progress
 	NO_ENABLED_EVENT;
 	MISFIRED(misfiredEvent:Event, misfiredSetting:Bool, itemLack:Bool, unfinishedAllRequiredEvents:Bool);
 	NEXT(firedEvent:Event);
+}
+class ProgressProperty
+{
+	public var readingNote(default, null):Note;
+	public var progress(default, null):Progress;
+	public function new(readingNote:Note, progress:Progress)
+	{
+		this.readingNote = readingNote;
+		this.progress = progress;
+	}
 }
 
 class Reader
@@ -22,15 +33,24 @@ class Reader
 		this.book = book;
 		this.itemHolder = itemHolder;
 	}
-	public function progress(checkPosition:Point):Progress
+	public function progress(checkPosition:Point):Array<ProgressProperty>
 	{
-		var readingStory = book.readingNote;
-
-		var hitArea = readingStory.getHitArea(checkPosition);
+		var progressPropertySet = [];
+		for (readingNote in book.readingNotes)
+		{
+			var progress = read(readingNote, checkPosition);
+			var progressProperty = new ProgressProperty(readingNote, progress);
+			progressPropertySet.push(progressProperty);
+		}
+		return progressPropertySet;
+	}
+	private function read(readingNote:Note, checkPosition:Point):Progress
+	{
+		var hitArea = readingNote.getHitArea(checkPosition);
 		if(hitArea == null)
 			return Progress.NO_HITAREA;
 
-		var event = readingStory.getEnabledEvent(hitArea);
+		var event = readingNote.getEnabledEvent(hitArea);
 		if(event == null)
 			return Progress.NO_ENABLED_EVENT;
 
@@ -41,12 +61,12 @@ class Reader
 				return Progress.MISFIRED(event, misfired, itemLack, unfinishedAllRequiredEvents);
 
 			case EventCondition.FIRED:
-			
+
 				event.finish();
 				if(!event.isBranched())
-					readingStory.setNextPriorityInArea(hitArea);
+					readingNote.setNextPriorityInArea(hitArea);
 				else
-					book.branchReadingNote(event.nextStory);
+					book.branchReadingNote(readingNote, event.nextNote);
 
 				return Progress.NEXT(event);
 		}

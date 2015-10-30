@@ -20,9 +20,9 @@ class Event
 	public var enabled(default, null):Bool;
 	public var finished(default, null):Bool;
 
-	public var nextStory:Note;
+	public var nextNote:Note;
 	public function isBranched():Bool
-		return nextStory != null;
+		return nextNote != null;
 
 	public var option:Dynamic;
 

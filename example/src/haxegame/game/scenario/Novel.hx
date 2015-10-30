@@ -9,7 +9,9 @@ class Novel extends Book
 	@note public var note1(default, null):Note1;
 	@note public var note2(default, null):Note2;
 	@note public var note3(default, null):Note3;
+	@note public var note4(default, null):Note4;
 }
+
 class Note1 extends Note
 {
 	@event public var table(default, null):Event;
@@ -28,4 +30,8 @@ class Note3 extends Note
 {
 	@event public var table(default, null):Event;
 	@event public var box(default, null):Event;
+}
+class Note4 extends Note
+{
+	@event public var entrance(default, null):Event;
 }

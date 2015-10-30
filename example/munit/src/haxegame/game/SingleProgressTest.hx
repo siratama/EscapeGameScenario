@@ -11,7 +11,7 @@ import massive.munit.Assert;
 
 using com.dango_itimi.geom.Point.PointUtil;
 
-class ReaderTest
+class SingleProgressTest
 {
 	private var writer:Writer;
 	private var novel:Novel;
@@ -42,7 +42,7 @@ class ReaderTest
 	@Before
 	public function setup():Void
 	{
-		writer = new Writer();
+		writer = new WriterA();
 		novel = writer.novel;
 		itemHolder = new ItemHolder();
 		reader = new Reader(novel, itemHolder);
@@ -72,7 +72,7 @@ class ReaderTest
 	private function testStory1():Void
 	{
 		//bed unfinished all required events
-		switch(reader.progress(BED_POSITION)){
+		switch(reader.progress(BED_POSITION)[0].progress){
 			case Progress.MISFIRED(event, misfired, itemLack, unfinishedAllRequiredEvents):
 				Assert.areEqual(event, novel.note1.bed);
 				Assert.isTrue(!misfired && !itemLack && unfinishedAllRequiredEvents);
@@ -80,13 +80,13 @@ class ReaderTest
 		}
 
 		//out position
-		switch(reader.progress(OUT_POSITION)){
+		switch(reader.progress(OUT_POSITION)[0].progress){
 			case Progress.NO_HITAREA: Assert.isTrue(true);
 			case _: Assert.isTrue(false);
 		}
 
 		//table fire
-		switch(reader.progress(TABLE_POSITION)){
+		switch(reader.progress(TABLE_POSITION)[0].progress){
 			case Progress.NEXT(event):
 				Assert.areEqual(event, novel.note1.table);
 				Assert.isTrue(novel.note1.table.finished);
@@ -94,13 +94,13 @@ class ReaderTest
 		}
 
 		//bed fire
-		switch(reader.progress(BED_POSITION)){
+		switch(reader.progress(BED_POSITION)[0].progress){
 			case Progress.NEXT(event): Assert.areEqual(event, novel.note1.bed);
 			case _: Assert.isTrue(false);
 		}
 
 		//box is lacked item
-		switch(reader.progress(TABLE_POSITION)){
+		switch(reader.progress(TABLE_POSITION)[0].progress){
 			case Progress.MISFIRED(event, misfired, itemLack, unfinishedAllRequiredEvents):
 				Assert.areEqual(event, novel.note1.box);
 				Assert.isTrue(!misfired && itemLack && !unfinishedAllRequiredEvents);
@@ -108,7 +108,7 @@ class ReaderTest
 		}
 
 		//floor fire
-		switch(reader.progress(BED_POSITION)){
+		switch(reader.progress(BED_POSITION)[0].progress){
 			case Progress.NEXT(event):
 				Assert.areEqual(event, novel.note1.floor);
 
@@ -119,7 +119,7 @@ class ReaderTest
 		}
 
 		//box fire
-		switch(reader.progress(TABLE_POSITION)){
+		switch(reader.progress(TABLE_POSITION)[0].progress){
 			case Progress.NEXT(event):
 				Assert.areEqual(event, novel.note1.box);
 
@@ -132,16 +132,16 @@ class ReaderTest
 	private function testStory2()
 	{
 		//auto branch to story2
-		Assert.areEqual(novel.readingNote, novel.note2);
+		Assert.areEqual(novel.readingNotes[0], novel.note2);
 
 		//mirror
-		switch(reader.progress(BED_POSITION)){
+		switch(reader.progress(BED_POSITION)[0].progress){
 			case Progress.NEXT(event): Assert.areEqual(event, novel.note2.mirror);
 			case _: Assert.isTrue(false);
 		}
 
 		//table
-		switch(reader.progress(TABLE_POSITION)){
+		switch(reader.progress(TABLE_POSITION)[0].progress){
 			case Progress.NEXT(event): Assert.areEqual(event, novel.note2.table);
 			case _: Assert.isTrue(false);
 		}
@@ -149,19 +149,19 @@ class ReaderTest
 	private function testStoryExchange()
 	{
 		//exchange to story3
-		novel.exchangeReadingNote(novel.note3);
+		novel.exchangeReadingNote(novel.note2, novel.note3);
 
 		//story3 table fire
-		switch(reader.progress(TABLE_POSITION)){
+		switch(reader.progress(TABLE_POSITION)[0].progress){
 			case Progress.NEXT(event): Assert.areEqual(event, novel.note3.table);
 			case _: Assert.isTrue(false);
 		}
 
 		//exchange to story2
-		novel.exchangeReadingNote(novel.note2);
+		novel.exchangeReadingNote(novel.note3, novel.note2);
 
 		//story2 box fire
-		switch(reader.progress(BED_POSITION)){
+		switch(reader.progress(BED_POSITION)[0].progress){
 			case Progress.NEXT(event): Assert.areEqual(event, novel.note2.box);
 			case _: Assert.isTrue(false);
 		}

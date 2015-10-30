@@ -16,9 +16,10 @@ class Writer
 	private var items:GameItems;
 
 	private var storySet:Array<Story>;
-	private var story1:Story1;
-	private var story2:Story2;
-	private var story3:Story3;
+	public var story1(default, null):Story1;
+	public var story2(default, null):Story2;
+	public var story3(default, null):Story3;
+	public var story4(default, null):Story4;
 
 	public function new()
 	{
@@ -33,16 +34,17 @@ class Writer
 		execute(Story1, novel.note1);
 		execute(Story2, novel.note2);
 		execute(Story3, novel.note3);
+		execute(Story4, novel.note4);
 
 		//set branch
-		novel.note1.box.nextStory = novel.note2;
+		novel.note1.box.nextNote = novel.note2;
 
-		novel.setReadingNote(novel.note1);
+		initializeToReadNote();
+
 		novel.checkSettingError();
 	}
 	private function execute(storyClass:Class<Story>, note:Note)
 	{
-		//var story:Story = Type.createInstance(storyClass, []);
 		var story:Story = Type.createEmptyInstance(storyClass);
 
 		story.eventOptionMap = eventOptionMap;
@@ -53,6 +55,21 @@ class Writer
 		story.write();
 		storySet.push(story);
 	}
+	private function initializeToReadNote(){}
 }
-
+class WriterA extends Writer
+{
+	override private function initializeToReadNote()
+	{
+		novel.addReadingNote(novel.note1);
+	}
+}
+class WriterB extends Writer
+{
+	override private function initializeToReadNote()
+	{
+		novel.addReadingNote(novel.note1);
+		novel.addReadingNote(novel.note4);
+	}
+}
 

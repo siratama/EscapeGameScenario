@@ -6,6 +6,13 @@ haxegame.game.scenario.Writer
 
 --next
 
+com.dango_itimi.escape_game.Reader
+-cp ../src/
+-neko a.n
+--no-output
+
+--next
+
 haxegame.game.scenario_error.overlapping_area.Story
 -cp ./src
 -cp ../src/
@@ -19,3 +26,46 @@ haxegame.game.scenario_error.event_order_error.Story
 -cp ../src/
 -neko a.n
 --no-output
+
+--next
+
+haxegame.game.SingleProgressTest
+-cp munit/src/
+-cp ./src
+-cp ../src/
+-neko a.n
+-lib munit
+-lib hamcrest
+--no-output
+
+--next
+
+haxegame.game.MultiProgressTest
+-cp munit/src/
+-cp ./src
+-cp ../src/
+-neko a.n
+-lib munit
+-lib hamcrest
+--no-output
+
+--next
+haxegame.game.scenario_error.event_order_error.EventOrderErrorTest
+-cp munit/src/
+-cp ./src
+-cp ../src/
+-neko a.n
+-lib munit
+-lib hamcrest
+--no-output
+
+--next
+haxegame.game.scenario_error.overlapping_area.OverlappingAreaTest
+-cp munit/src/
+-cp ./src
+-cp ../src/
+-neko a.n
+-lib munit
+-lib hamcrest
+--no-output
+

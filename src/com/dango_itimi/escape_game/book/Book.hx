@@ -6,7 +6,7 @@ using com.dango_itimi.utils.MetaUtil;
 class Book
 {
 	private var notes:Array<Note>;
-	public var readingNote(default, null):Note;
+	public var readingNotes(default, null):Array<Note>;
 
 	private static inline var META_NOTE = "note";
 	//
@@ -20,6 +20,7 @@ class Book
 	public function new()
 	{
 		notes = [];
+		readingNotes = [];
 		setExtendedStoryClassPackagesString();
 
 		var metaFieldSet = this.getMetaFieldsWithInstance(META_NOTE);
@@ -61,22 +62,37 @@ class Book
 	}
 
 	//
-	public function setReadingNote(note:Note)
+	public function addReadingNote(note:Note)
 	{
 		note.enable(true);
 		note.initializePriorityInArea();
-		readingNote = note;
+		readingNotes.push(note);
 	}
-	public function branchReadingNote(nextNote:Note)
+	public function branchReadingNote(readingNote:Note, nextNote:Note)
 	{
 		readingNote.enable(false);
-		setReadingNote(nextNote);
+		removeReadingNote(readingNote);
+		addReadingNote(nextNote);
 	}
-	public function exchangeReadingNote(exchangedNote:Note)
+	public function exchangeReadingNote(readingNote:Note, exchangedNote:Note)
 	{
 		readingNote.enable(false);
+		removeReadingNote(readingNote);
+
 		exchangedNote.setPriorityInAreaWithExchangedReading();
-		readingNote = exchangedNote;
+		readingNotes.push(exchangedNote);
+	}
+	private function removeReadingNote(readingNote:Note)
+	{
+		for (i in 0...readingNotes.length)
+		{
+			var note = readingNotes[i];
+			if(note == readingNote){
+				readingNotes.splice(i, 1);
+				return;
+			}
+		}
+		throw "is not reading";
 	}
 }
 
