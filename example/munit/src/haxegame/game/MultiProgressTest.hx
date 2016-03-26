@@ -41,7 +41,7 @@ class MultiProgressTest
 	@Before
 	public function setup():Void
 	{
-		writer = new WriterB();
+		writer = new MultiProgressWriter();
 		novel = writer.novel;
 		itemHolder = new ItemHolder();
 		reader = new Reader(novel, itemHolder);

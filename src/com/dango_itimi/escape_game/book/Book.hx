@@ -94,5 +94,16 @@ class Book
 		}
 		throw "is not reading";
 	}
+
+	public function isReading(note:Note)
+	{
+		for (readingNote in readingNotes)
+		{
+			if(readingNote == note){
+				return true;
+			}
+		}
+		return false;
+	}
 }
 

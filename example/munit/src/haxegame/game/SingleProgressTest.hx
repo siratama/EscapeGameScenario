@@ -42,7 +42,7 @@ class SingleProgressTest
 	@Before
 	public function setup():Void
 	{
-		writer = new WriterA();
+		writer = new SingleProgressWriter();
 		novel = writer.novel;
 		itemHolder = new ItemHolder();
 		reader = new Reader(novel, itemHolder);
@@ -56,6 +56,9 @@ class SingleProgressTest
 	@Test
 	public function testBranchStoryIsNotFired():Void
 	{
+		Assert.isFalse(reader.isProgressEventExisted(OUT_POSITION));
+		Assert.isTrue(reader.isProgressEventExisted(TABLE_POSITION));
+
 		reader.progress(TABLE_POSITION);
 		Assert.isFalse(novel.note2.table.finished);
 		Assert.isFalse(novel.note3.table.finished);

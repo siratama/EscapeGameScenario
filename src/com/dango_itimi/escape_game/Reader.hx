@@ -1,5 +1,6 @@
 package com.dango_itimi.escape_game;
 
+import com.dango_itimi.geom.Rectangle;
 import com.dango_itimi.escape_game.book.Note;
 import com.dango_itimi.escape_game.book.Book;
 import com.dango_itimi.escape_game.book.Event;
@@ -32,6 +33,21 @@ class Reader
 	{
 		this.book = book;
 		this.itemHolder = itemHolder;
+	}
+
+	public function isProgressEventExisted(checkPosition:Point):Bool
+	{
+		for (readingNote in book.readingNotes)
+		{
+			var hitArea = readingNote.getHitArea(checkPosition);
+			if(hitArea == null)
+				return false;
+
+			var event = readingNote.getEnabledEvent(hitArea);
+			if(event == null)
+				return false;
+		}
+		return true;
 	}
 	public function progress(checkPosition:Point):Array<ProgressProperty>
 	{

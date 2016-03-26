@@ -57,14 +57,14 @@ class Writer
 	}
 	private function initializeToReadNote(){}
 }
-class WriterA extends Writer
+class SingleProgressWriter extends Writer
 {
 	override private function initializeToReadNote()
 	{
 		novel.addReadingNote(novel.note1);
 	}
 }
-class WriterB extends Writer
+class MultiProgressWriter extends Writer
 {
 	override private function initializeToReadNote()
 	{
