@@ -1,5 +1,75 @@
 # EscapeGameScenario
-クリックし アイテムを使用して進行する 脱出系ゲーム向けライブラリ
+クリックで進行する 脱出系ゲーム向けライブラリ
+
+## 概念
+
+
+### Event
+
+#### プロパティ
+
+* enabled
+	* その Event が実行可能対象であるかどうかを判定するプロパティ
+	* true に設定される事で Reader からの検出が可能になる
+		* 同 hitArea(Rectangle) 内に enabled == true の Event が複数検出される場合 Reader はエラーを投げる
+
+* endless
+	* 実行が完了しない Event である事を示すプロパティ
+	* 例えば、背景オブジェクトをクリックして「これは○○です。」といった、テキストのみを表示したい場合 true に設定する
+	* enabled が true になることで「実行対象にはなるが実行完了は不可」という状態になる
+
+* completed
+	* Event が実行完了したかどうかを示すプロパティ
+	* enabled が false の状態の Event に対し、実行完了前なのか 実行完了後なのか、判定するためのプロパティ
+		* enabled が true の状態の Event は、実行完了前である
+	* 開発側は意識する必要はないため private
+	
+#### 図解
+	
+#### 設計未解決思想
+
+ループイベント問題
+
+例えば Ａ, Ｂ, Ｃ, Ｄ のイベントが存在し、以下のようにＣのイベント完了後に有効になるイベントはＡに設定したとする。
+
+Ａ.enabledEventsAfterCompletion = [Ｂ];
+Ｂ.enabledEventsAfterCompletion = [Ｃ];
+Ｃ.enabledEventsAfterCompletion = [Ａ];
+
+Ａ→Ｂ→Ｃ
+↑←←←↓
+
+イベントＤの完了条件は、イベントＡの完了とする。
+
+Ｄ.requiredCompletionEvents = [Ａ];
+
+ここで、Ｃが完了した時、以下の状況が発生する。
+
+(1)Ｃ.complete();
+↓
+(2)Ａ.enable();
+↓
+(3)Ｄ.isCompletable() == false;
+
+仮に、Ｄが(1)の前ですでにイベント完了状態(completed == true)だったとしても、
+Ｄは再びイベントが完了できない状態(Ｄ.isCompletable() == false)になる。
+
+この状況に何か問題は発生しないか？
+
+requiredCompletionEvents 内の Event 全てが completed == true の時のみに、
+自身が completed == true 状態になるので、
+completed == true にも関わらず
+isCompletable() == false はロジックエラーである？
+
+そんなことはない？
+「一度は完了したが、他のイベントの影響により 完了が不可な状況になった」という状況はありえる。
+(completed ではなく completed once か？)
+
+この状況で、描画側がどういう表示にするかは、描画処理側の対処次第、となりそう。
+ループイベントでは この状況が発生する旨を マニュアル記述で留意させる。
+芋づる式であらゆるイベントがこの状況になる可能性があるため、ループイベントの使用は注意が必要である。
+
+------------------------------------
 
 ## 基礎概念
 

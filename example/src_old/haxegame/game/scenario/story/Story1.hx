@@ -2,9 +2,9 @@ package haxegame.game.scenario.story;
 
 import haxegame.game.scenario.EventOption.EventOptionCreator;
 import haxegame.game.scenario.EventOption.Texts;
-import haxegame.game.scenario.Novel.Note1;
+import haxegame.game.scenario.Chapter.Note1;
 
-class Story1 extends Story
+class Story1 extends Episode
 {
 	private var note:Note1;
 
@@ -24,7 +24,7 @@ class Story1 extends Story
 
 		var texts = new Texts();
 		texts.fired = ["The table is broken."];
-		eventOptionMap[note.table] = EventOptionCreator.create(texts);
+		directionMap[note.table] = EventOptionCreator.create(texts);
 	}
 	private function setBed()
 	{
@@ -34,7 +34,7 @@ class Story1 extends Story
 		var texts = new Texts();
 		texts.checked = ["This is a bed."];
 		texts.fired = ["The floor is broken."];
-		eventOptionMap[note.bed] = EventOptionCreator.create(texts);
+		directionMap[note.bed] = EventOptionCreator.create(texts);
 	}
 	private function setFloor()
 	{

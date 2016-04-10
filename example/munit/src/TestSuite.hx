@@ -1,9 +1,8 @@
 import massive.munit.TestSuite;
 
-import haxegame.game.MultiProgressTest;
+import haxegame.game.GameTest;
 import haxegame.game.scenario_error.event_order_error.EventOrderErrorTest;
 import haxegame.game.scenario_error.overlapping_area.OverlappingAreaTest;
-import haxegame.game.SingleProgressTest;
 
 /**
  * Auto generated Test Suite for MassiveUnit.
@@ -17,9 +16,8 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
-		add(haxegame.game.MultiProgressTest);
+		add(haxegame.game.GameTest);
 		add(haxegame.game.scenario_error.event_order_error.EventOrderErrorTest);
 		add(haxegame.game.scenario_error.overlapping_area.OverlappingAreaTest);
-		add(haxegame.game.SingleProgressTest);
 	}
 }

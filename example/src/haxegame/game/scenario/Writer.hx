@@ -1,75 +1,45 @@
 package haxegame.game.scenario;
-
-import haxegame.game.scenario.story.*;
-import haxegame.game.item.GameItems;
-import com.dango_itimi.escape_game.book.Event;
-import com.dango_itimi.escape_game.book.Note;
-
-using com.dango_itimi.utils.MetaUtil;
+import com.dango_itimi.scenario.framework.direction.DirectionMap;
+import com.dango_itimi.scenario.framework.direction.Direction;
+import com.dango_itimi.scenario.framework.item.ItemHolder;
+import com.dango_itimi.scenario.core.Event;
+import haxegame.game.EventAreaSprite;
+import haxegame.game.scenario.Episode;
 
 class Writer
 {
-	public var novel(default, null):Novel;
-	public var eventOptionMap(default, null):Map<Event, EventOption>;
+	public var chapter(default, null):Chapter;
 
+	private var itemHolder:ItemHolder;
 	private var eventAreaSprite:EventAreaSprite;
-	private var items:GameItems;
+	private var directionMap:DirectionMap;
 
-	private var storySet:Array<Story>;
-	public var story1(default, null):Story1;
-	public var story2(default, null):Story2;
-	public var story3(default, null):Story3;
-	public var story4(default, null):Story4;
+	private var episodeSet:Array<Episode>;
+	public var episode1(default, null):Episode1;
+	public var episode2(default, null):Episode2;
 
-	public function new()
+	public function new(itemHolder:ItemHolder, directionMap:DirectionMap, eventAreaSprite:EventAreaSprite)
 	{
-		eventOptionMap = new Map();
-		eventAreaSprite = new EventAreaSprite();
-		items = GameItems.instance;
+		this.itemHolder = itemHolder;
+		this.directionMap = directionMap;
+		this.eventAreaSprite = eventAreaSprite;
 
-		novel = new Novel();
+		chapter = new Chapter();
 
-		//write event
-		storySet = [];
-		execute(Story1, novel.note1);
-		execute(Story2, novel.note2);
-		execute(Story3, novel.note3);
-		execute(Story4, novel.note4);
-
-		//set branch
-		novel.note1.box.nextNote = novel.note2;
-
-		initializeToReadNote();
-
-		novel.checkSettingError();
+		episodeSet = [];
+		execute(Episode1);
+		execute(Episode2);
 	}
-	private function execute(storyClass:Class<Story>, note:Note)
+	private function execute(episodeClass:Class<Episode>)
 	{
-		var story:Story = Type.createEmptyInstance(storyClass);
+		var episode:Episode = Type.createEmptyInstance(episodeClass);
 
-		story.eventOptionMap = eventOptionMap;
-		story.eventAreaSprite = eventAreaSprite;
-		story.items = items;
-		story.writtenNote = note;
+		episode.itemHolder = itemHolder;
+		episode.directionMap = directionMap;
+		episode.eventAreaSprite = eventAreaSprite;
+		episode.chapter = chapter;
 
-		story.write();
-		storySet.push(story);
-	}
-	private function initializeToReadNote(){}
-}
-class SingleProgressWriter extends Writer
-{
-	override private function initializeToReadNote()
-	{
-		novel.addReadingNote(novel.note1);
+		episode.write();
+		episodeSet.push(episode);
 	}
 }
-class MultiProgressWriter extends Writer
-{
-	override private function initializeToReadNote()
-	{
-		novel.addReadingNote(novel.note1);
-		novel.addReadingNote(novel.note4);
-	}
-}
-

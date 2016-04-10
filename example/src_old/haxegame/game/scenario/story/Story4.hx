@@ -1,6 +1,6 @@
 package haxegame.game.scenario.story;
-import haxegame.game.scenario.Novel.Note4;
-class Story4 extends Story
+import haxegame.game.scenario.Chapter.Note4;
+class Story4 extends Episode
 {
 	private var note:Note4;
 	override public function write()

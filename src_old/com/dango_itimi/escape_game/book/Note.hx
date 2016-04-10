@@ -72,7 +72,7 @@ class Note
 			for (i in 0...eventSet.length)
 			{
 				var event = eventSet[i];
-				if(event.misfired && i < eventSet.length - 1){
+				if(event.endless && i < eventSet.length - 1){
 					throw "need to set misfired event at the end:" + event;
 				}
 			}

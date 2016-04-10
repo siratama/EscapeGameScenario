@@ -1,2 +1,1 @@
-Tests PASSED under as3 using summary client
-END
+Tests PASSED under neko using summary client
