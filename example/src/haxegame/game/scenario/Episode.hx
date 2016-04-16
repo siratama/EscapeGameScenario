@@ -2,14 +2,14 @@ package haxegame.game.scenario;
 
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
 import com.dango_itimi.scenario.framework.direction.Cut;
-import com.dango_itimi.scenario.framework.item.ItemHolder;
+import com.dango_itimi.scenario.framework.item.Inventory;
 import com.dango_itimi.scenario.core.Event;
 import haxegame.game.EventAreaSprite;
 
 class Episode
 {
 	public var chapter(null, default):Chapter;
-	public var itemHolder(null, default):ItemHolder;
+	public var itemHolder(null, default):Inventory;
 	public var eventAreaSprite(null, default):EventAreaSprite;
 	public var directionMap(null, default):DirectionMap;
 

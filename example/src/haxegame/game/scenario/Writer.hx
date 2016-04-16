@@ -1,7 +1,7 @@
 package haxegame.game.scenario;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
 import com.dango_itimi.scenario.framework.direction.Direction;
-import com.dango_itimi.scenario.framework.item.ItemHolder;
+import com.dango_itimi.scenario.framework.item.Inventory;
 import com.dango_itimi.scenario.core.Event;
 import haxegame.game.EventAreaSprite;
 import haxegame.game.scenario.Episode;
@@ -10,7 +10,7 @@ class Writer
 {
 	public var chapter(default, null):Chapter;
 
-	private var itemHolder:ItemHolder;
+	private var itemHolder:Inventory;
 	private var eventAreaSprite:EventAreaSprite;
 	private var directionMap:DirectionMap;
 
@@ -18,7 +18,7 @@ class Writer
 	public var episode1(default, null):Episode1;
 	public var episode2(default, null):Episode2;
 
-	public function new(itemHolder:ItemHolder, directionMap:DirectionMap, eventAreaSprite:EventAreaSprite)
+	public function new(itemHolder:Inventory, directionMap:DirectionMap, eventAreaSprite:EventAreaSprite)
 	{
 		this.itemHolder = itemHolder;
 		this.directionMap = directionMap;

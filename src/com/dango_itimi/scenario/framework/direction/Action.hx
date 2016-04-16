@@ -1,6 +1,6 @@
 package com.dango_itimi.scenario.framework.direction;
 
-class Action implements IAction
+class Action implements ActionInterface
 {
 	private var mainFunction:Void->Void;
 

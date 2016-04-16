@@ -1,7 +1,8 @@
 package com.dango_itimi.scenario.framework;
 
+import com.dango_itimi.scenario.framework.item.Item;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
-import com.dango_itimi.scenario.framework.item.ItemHolder;
+import com.dango_itimi.scenario.framework.item.Inventory;
 import com.dango_itimi.scenario.framework.direction.Cut;
 import com.dango_itimi.scenario.framework.direction.Direction;
 import com.dango_itimi.scenario.core.Event;
@@ -12,10 +13,10 @@ import com.dango_itimi.geom.Point;
 class Director
 {
 	private var projector:Projector;
-	private var itemHolder:ItemHolder;
+	private var itemHolder:Inventory;
 	private var directionMap:DirectionMap;
 
-	public function new(projector:Projector, itemHolder:ItemHolder, directionMap:DirectionMap)
+	public function new(projector:Projector, itemHolder:Inventory, directionMap:DirectionMap)
 	{
 		this.projector = projector;
 		this.itemHolder = itemHolder;

@@ -17,7 +17,7 @@ class Scene
 	//
 	//@event public var table(default, null):Event;
 
-	private var set:Array<Event>;
+	public var set(default, null):Array<Event>;
 	private var areaMap:Map<Rectangle, Array<Event>>;
 
 	public function new()
@@ -46,8 +46,39 @@ class Scene
 	//
 	public function setAreaMap(event:Event, hitArea:Rectangle)
 	{
+		if(!isPropertyInThisScene(event)) throw event + " is not property in this scene.";
+		if(isIncludedInAreaMap(event)) throw event + "is included in areaMap already";
+
 		if(areaMap[hitArea] == null) areaMap[hitArea] = [];
 		areaMap[hitArea].push(event);
+	}
+
+	/*
+	 * error check
+	 */
+	private function isPropertyInThisScene(checked:Event):Bool
+	{
+		for(event in set) if(checked == event) return true;
+		return false;
+	}
+	private function isIncludedInAreaMap(checked:Event):Bool
+	{
+		for(hitArea in areaMap.keys())
+		{
+			for(event in areaMap[hitArea])
+			{
+				if(checked == event) return true;
+			}
+		}
+		return false;
+	}
+	public function getUnSetEventsInAreaMap():Array<Event>
+	{
+		var unsetEvents:Array<Event> = [];
+		for(event in set){
+			if(!isIncludedInAreaMap(event)) unsetEvents.push(event);
+		}
+		return unsetEvents;
 	}
 
 	//

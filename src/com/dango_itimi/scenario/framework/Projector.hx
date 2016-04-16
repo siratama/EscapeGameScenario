@@ -2,7 +2,7 @@ package com.dango_itimi.scenario.framework;
 
 import com.dango_itimi.scenario.framework.item.Item;
 import com.dango_itimi.scenario.framework.text.TextViewer;
-import com.dango_itimi.scenario.framework.item.ItemHolder;
+import com.dango_itimi.scenario.framework.item.Inventory;
 import com.dango_itimi.scenario.framework.direction.Cut;
 import com.dango_itimi.scenario.framework.text.TextDisplayTymingInAction;
 
@@ -26,14 +26,14 @@ class Projector
 
 	private var mainFunction:Void->Void;
 	private var nextFunctionAfterPlayText:Void->Void;
-	private var itemHolder:ItemHolder;
+	private var itemHolder:Inventory;
 	private var textViewer:TextViewer;
 
 	private var cutSet:Array<Cut>;
 	private var cutIndex:Int;
 	private var displayCut:Cut;
 
-	public function new(itemHolder:ItemHolder, textViewer:TextViewer)
+	public function new(itemHolder:Inventory, textViewer:TextViewer)
 	{
 		this.itemHolder = itemHolder;
 		this.textViewer = textViewer;
@@ -91,15 +91,15 @@ class Projector
 		this.nextFunctionAfterPlayText = nextFunctionAfterPlayText;
 
 		textViewer.initialize(displayCut.text);
-		displayCut.textSkipOperation.initialize();
+		displayCut.skipOperation.initialize();
 		mainFunction = playText;
 	}
 	private function playText()
 	{
 		textViewer.run();
 
-		displayCut.textSkipOperation.run();
-		if(displayCut.textSkipOperation.isExecuted())
+		displayCut.skipOperation.run();
+		if(displayCut.skipOperation.isExecuted())
 			textViewer.orderSkip();
 
 		if(textViewer.isFinished())
@@ -110,23 +110,30 @@ class Projector
 	private function initializeToPlayAction()
 	{
 		displayCut.action.initialize();
+		displayCut.skipOperation.initialize();
 		mainFunction = playAction;
 	}
 	private function playAction()
 	{
 		displayCut.action.run();
-		if(!displayCut.action.isFinished()) return;
 
-		if(displayCut.text == null)
+		displayCut.skipOperation.run();
+		if(displayCut.skipOperation.isExecuted())
+			displayCut.action.playDirect();
+
+		if(displayCut.action.isFinished())
 		{
-			destroyToPlay();
-		}
-		else
-		{
-			switch(displayCut.textDisplayTymingInAction)
+			if(displayCut.text == null)
 			{
-				case TextDisplayTymingInAction.AFTER: initializeToPlayText(waitClapperboard);
-				case _: waitClapperboard();
+				destroyToPlay();
+			}
+			else
+			{
+				switch(displayCut.textDisplayTymingInAction)
+				{
+					case TextDisplayTymingInAction.AFTER: initializeToPlayText(initializeToWaitClapperboard);
+					case _: initializeToWaitClapperboard();
+				}
 			}
 		}
 	}
@@ -136,6 +143,7 @@ class Projector
 	{
 		displayCut.action.initialize();
 		textViewer.initialize(displayCut.text);
+		displayCut.skipOperation.initialize();
 		mainFunction = playActionAndText;
 	}
 	private function playActionAndText()
@@ -143,16 +151,24 @@ class Projector
 		displayCut.action.run();
 		textViewer.run();
 
-		displayCut.textSkipOperation.run();
-		if(displayCut.textSkipOperation.isExecuted())
+		displayCut.skipOperation.run();
+		if(displayCut.skipOperation.isExecuted())
+		{
 			textViewer.orderSkip();
+			displayCut.action.playDirect();
+		}
 
-		if(!displayCut.action.isFinished() && !textViewer.isFinished()) return;
-
-		waitClapperboard();
+		if(displayCut.action.isFinished() && textViewer.isFinished())
+			initializeToWaitClapperboard();
 	}
 
 	//
+
+	private function initializeToWaitClapperboard()
+	{
+		displayCut.clapperboard.initialize();
+		mainFunction = waitClapperboard;
+	}
 	private function waitClapperboard()
 	{
 		displayCut.clapperboard.run();

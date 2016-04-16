@@ -4,7 +4,7 @@ using com.dango_itimi.utils.MetaUtil;
 
 class Sequence
 {
-	private var scenes:Array<Scene>;
+	public var scenes(default, null):Array<Scene>;
 
 	private static inline var META_SCENE = "scene";
 	//

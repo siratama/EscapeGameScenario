@@ -1,10 +1,12 @@
 package haxegame.game;
 
+import com.dango_itimi.scenario.framework.Assistant;
+import com.dango_itimi.scenario.framework.Projector;
+import com.dango_itimi.scenario.framework.Director;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
-import com.dango_itimi.scenario.framework.item.ItemHolder;
+import com.dango_itimi.scenario.framework.item.Inventory;
 import haxegame.game.scenario.Writer;
 import haxegame.game.scenario.Chapter;
-import com.dango_itimi.scenario.core.Scenario;
 import com.dango_itimi.geom.Point;
 import massive.munit.Assert;
 
@@ -12,12 +14,15 @@ using com.dango_itimi.geom.Point.PointUtil;
 
 class GameTest
 {
-	private var itemHolder:ItemHolder;
+	private var itemHolder:Inventory;
 	private var directionMap:DirectionMap;
 	private var eventAreaSprite:EventAreaSprite;
 
-	private var writer:Writer;
+	private var scenarioWriter:Writer;
 	private var chapter:Chapter;
+	private var subtitle:Subtitle;
+	private var director:Director;
+	private var projector:Projector;
 
 	private static var TABLE_POSITION = PointUtil.create(0, 0);
 	private static var BED_POSITION = PointUtil.create(2, 0);
@@ -41,12 +46,16 @@ class GameTest
 	@Before
 	public function setup():Void
 	{
-		itemHolder = new ItemHolder();
+		itemHolder = new Inventory();
 		directionMap = new DirectionMap();
 		eventAreaSprite = new EventAreaSprite();
 
-		writer = new Writer(itemHolder, directionMap, eventAreaSprite);
-		chapter = writer.chapter;
+		scenarioWriter = new Writer(itemHolder, directionMap, eventAreaSprite);
+		chapter = scenarioWriter.chapter;
+
+		subtitle = new Subtitle();
+		projector = new Projector(itemHolder, subtitle.textViewer);
+		director = new Director(projector, itemHolder, directionMap);
 	}
 
 	@After
@@ -55,8 +64,19 @@ class GameTest
 	}
 
 	@Test
-	public function testBranchStoryIsNotFired():Void
+	public function testPairOfEventAndDirection():Void
 	{
+		try{
+			Assistant.checkError(chapter, directionMap);
+		}
+		catch(e:Dynamic)
+		{
+			Assert.fail(e);
+		}
+
+		director.progress(chapter.scene1, TABLE_POSITION);
+		trace("aaa");
+
 		/*
 		Assert.isFalse(reader.isProgressEventExisted(OUT_POSITION));
 		Assert.isTrue(reader.isProgressEventExisted(TABLE_POSITION));
@@ -66,6 +86,12 @@ class GameTest
 		Assert.isFalse(novel.note3.table.finished);
 		Assert.isTrue(novel.note1.table.finished);
 		*/
+	}
+
+	@Test
+	public function testStory():Void
+	{
+		trace("check");
 	}
 
 	/*

@@ -1,5 +1,5 @@
 package com.dango_itimi.scenario.framework.direction;
-class Interaction
+class Interaction implements InteractionInterface
 {
 	private var mainFunction:Void->Void;
 

@@ -2,14 +2,14 @@ package haxegame.game;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
 import com.dango_itimi.scenario.framework.text.TextViewer;
 import com.dango_itimi.scenario.framework.Projector;
-import com.dango_itimi.scenario.framework.item.ItemHolder;
+import com.dango_itimi.scenario.framework.item.Inventory;
 import com.dango_itimi.geom.Point;
 import com.dango_itimi.scenario.framework.Director;
 import haxegame.game.scenario.Writer;
 
 class Game
 {
-	private var itemHolder:ItemHolder;
+	private var itemHolder:Inventory;
 	private var directionMap:DirectionMap;
 	private var eventAreaSprite:EventAreaSprite;
 
@@ -22,7 +22,7 @@ class Game
 
 	public function new()
 	{
-		itemHolder = new ItemHolder();
+		itemHolder = new Inventory();
 		directionMap = new DirectionMap();
 		eventAreaSprite = new EventAreaSprite();
 

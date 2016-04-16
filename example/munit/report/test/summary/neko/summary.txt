@@ -1,7 +1,9 @@
-result:true
-count:3
+result:false
+count:4
 pass:3
-fail:0
+fail:1
 error:0
 ignore:0
-time:0.00100135803222656
+time:0.00099945068359375
+
+# haxegame.game.GameTest#testPairOfEventAndDirection

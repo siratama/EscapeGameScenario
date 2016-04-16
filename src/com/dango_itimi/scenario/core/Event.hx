@@ -16,9 +16,14 @@ class Event
 	public function new(id:String)
 	{
 		this.id = id;
+
 		endless = false;
 		enabled = false;
 		completed = false;
+
+		requiredCompletionEvents = [];
+		enabledEventsAfterCompletion = [];
+		disenabledEventsAfterCompletion = [];
 	}
 	public function enable() {
 		enabled = true;
