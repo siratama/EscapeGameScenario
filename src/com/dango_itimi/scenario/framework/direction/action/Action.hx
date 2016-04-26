@@ -1,26 +1,10 @@
-package com.dango_itimi.scenario.framework.direction;
-
-/*
-class ActionEvent
-{
-}
-*/
+package com.dango_itimi.scenario.framework.direction.action;
 
 class Action implements ActionInterface
 {
 	private static inline var SKIP_PLAY_ROOP_MAX_COUNT:Int = 1000;
 	private var skipPlayRoopMaxCount:Int;
 	private var mainFunction:Void->Void;
-
-	/*
-	private var event:ActionEvent;
-	public function getEvent():ActionEvent
-	{
-		var n = event;
-		event = null;
-		return event;
-	}
-	*/
 
 	public function new(?skipPlayRoopMaxCount:Null<Int>)
 	{

@@ -2,8 +2,8 @@ package com.dango_itimi.scenario.framework.directionmap;
 
 import com.dango_itimi.scenario.framework.item.Item;
 import com.dango_itimi.scenario.framework.Appraiser;
-import com.dango_itimi.scenario.framework.direction.Interaction;
-import com.dango_itimi.scenario.framework.direction.Action;
+import com.dango_itimi.scenario.framework.direction.interaction.Interaction;
+import com.dango_itimi.scenario.framework.direction.action.Action;
 import com.dango_itimi.scenario.framework.direction.Cut;
 import com.dango_itimi.scenario.framework.direction.Film;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;

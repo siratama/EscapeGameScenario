@@ -1,4 +1,4 @@
-package com.dango_itimi.scenario.framework.direction;
+package com.dango_itimi.scenario.framework.direction.interaction;
 class Interaction implements InteractionInterface
 {
 	private var mainFunction:Void->Void;

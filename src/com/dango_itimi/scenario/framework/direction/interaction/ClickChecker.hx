@@ -1,4 +1,4 @@
-package com.dango_itimi.scenario.framework.direction;
+package com.dango_itimi.scenario.framework.direction.interaction;
 class ClickChecker extends Interaction
 {
 	public var clicked(null, set):Bool;

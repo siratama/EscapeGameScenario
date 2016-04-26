@@ -2,8 +2,8 @@ package com.dango_itimi.scenario.framework.director;
 
 import com.dango_itimi.scenario.framework.item.Item;
 import com.dango_itimi.scenario.framework.direction.Film;
-import com.dango_itimi.scenario.framework.direction.Action;
-import com.dango_itimi.scenario.framework.direction.Interaction;
+import com.dango_itimi.scenario.framework.direction.action.Action;
+import com.dango_itimi.scenario.framework.direction.interaction.Interaction;
 import com.dango_itimi.scenario.framework.direction.Cut;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
 import com.dango_itimi.scenario.framework.item.Inventory;
@@ -94,31 +94,40 @@ class Test
 
 		chapter.scene1.banana.requiredCompletionEvents = [chapter.scene1.orange, shield];
 		areaManager.set(bedHitArea, chapter.scene1.banana);
-		directionMap.set(chapter.scene1.banana, firedFilm, equipedIncorrectItemFilm);
+		directionMap.set(chapter.scene1.banana, firedFilm, checkedFilm, equipedIncorrectItemFilm);
 
 		//test
 		Assert.isTrue(chapter.checkOnlyEnabledEventSet([chapter.scene1.apple]));
 
 		var film:Film;
 
+		//out area
 		Assert.isFalse(Scenario.hasProgressEvent(areaManager, chapter.scene1, OUT_POSITION));
 		film = director.progress(chapter.scene1, OUT_POSITION);
 		Assert.isTrue(film == null);
 
+		//fired next event
 		Assert.isTrue(Scenario.hasProgressEvent(areaManager, chapter.scene1, TABLE_POSITION));
 		film = director.progress(chapter.scene1, TABLE_POSITION);
 		Assert.isTrue(film == firedFilm);
 		Assert.isTrue(chapter.checkOnlyEnabledEventSet([chapter.scene1.orange]));
 
+		//gotten firedFilm include ItemChange cut
 		film = director.progress(chapter.scene1, BED_POSITION);
 		Assert.isTrue(film == itemChangeFiredFilm);
 		Assert.isTrue(chapter.checkOnlyEnabledEventSet([chapter.scene1.banana]));
 
+		//gotten checkedFilm
+		film = director.progress(chapter.scene1, BED_POSITION);
+		Assert.isTrue(film == checkedFilm);
+
+		//gotten equipedIncorrectItemFilm
 		inventory.pickup(sword);
 		inventory.select(sword);
 		film = director.progress(chapter.scene1, BED_POSITION);
 		Assert.isTrue(film == equipedIncorrectItemFilm);
 
+		//gotten firedFilm after gotten checkedFilm and equipedIncorrectItemFilm
 		inventory.pickup(shield);
 		inventory.select(shield);
 		film = director.progress(chapter.scene1, BED_POSITION);

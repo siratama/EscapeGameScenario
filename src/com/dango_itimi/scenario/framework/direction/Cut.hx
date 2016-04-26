@@ -1,4 +1,7 @@
 package com.dango_itimi.scenario.framework.direction;
+import com.dango_itimi.scenario.framework.direction.action.ActionInterface;
+import com.dango_itimi.scenario.framework.direction.interaction.Interaction;
+import com.dango_itimi.scenario.framework.direction.interaction.InteractionInterface;
 import com.dango_itimi.scenario.framework.item.Inventory;
 import com.dango_itimi.scenario.framework.item.Inventory.ItemChange;
 import com.dango_itimi.scenario.framework.item.Item;

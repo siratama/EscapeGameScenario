@@ -1,8 +1,8 @@
 package haxegame.game.scenario;
 
 import com.dango_itimi.scenario.framework.direction.Film;
-import com.dango_itimi.scenario.framework.direction.Action;
-import com.dango_itimi.scenario.framework.direction.ClickChecker;
+import com.dango_itimi.scenario.framework.direction.action.Action;
+import com.dango_itimi.scenario.framework.direction.interaction.ClickChecker;
 import com.dango_itimi.scenario.framework.area.AreaManager;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
 import com.dango_itimi.scenario.framework.direction.Cut;

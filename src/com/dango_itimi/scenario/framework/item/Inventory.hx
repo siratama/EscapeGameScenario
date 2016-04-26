@@ -46,6 +46,7 @@ class Inventory
 			}
 			i--;
 		}
+		if(i <= -1) throw "You do not have " + item.id;
 	}
 	public function removeSet(itemSet:Array<Item>)
 	{

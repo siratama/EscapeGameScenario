@@ -2,7 +2,7 @@ package haxegame.game;
 
 import haxegame.game.scenario.Items;
 import com.dango_itimi.scenario.framework.Scenario;
-import com.dango_itimi.scenario.framework.direction.ClickChecker;
+import com.dango_itimi.scenario.framework.direction.interaction.ClickChecker;
 import com.dango_itimi.scenario.framework.direction.Film;
 import com.dango_itimi.scenario.framework.area.AreaManager;
 import com.dango_itimi.scenario.framework.Appraiser;
