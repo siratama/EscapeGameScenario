@@ -1,5 +1,6 @@
 package com.dango_itimi.scenario.framework;
 
+import com.dango_itimi.scenario.framework.direction.Film;
 import com.dango_itimi.scenario.framework.item.Item;
 import com.dango_itimi.scenario.framework.text.TextViewer;
 import com.dango_itimi.scenario.framework.item.Inventory;
@@ -26,32 +27,30 @@ class Projector
 
 	private var mainFunction:Void->Void;
 	private var nextFunctionAfterPlayText:Void->Void;
-	private var itemHolder:Inventory;
 	private var textViewer:TextViewer;
 
-	private var cutSet:Array<Cut>;
+	private var film:Film;
 	private var cutIndex:Int;
-	private var displayCut:Cut;
+	public var displayCut(default, null):Cut;
 
-	public function new(itemHolder:Inventory, textViewer:TextViewer)
+	public function new(textViewer:TextViewer)
 	{
-		this.itemHolder = itemHolder;
 		this.textViewer = textViewer;
 	}
 	public function run()
 	{
 		mainFunction();
 	}
-	public function initialize(cutSet:Array<Cut>)
+	public function initialize(film:Film)
 	{
-		this.cutSet = cutSet;
+		this.film = film;
 		event = ProjectorEvent.NONE;
 		cutIndex = 0;
 		setDisplayCut();
 	}
 	private function setDisplayCut()
 	{
-		displayCut = cutSet[cutIndex];
+		displayCut = film.cutSet[cutIndex];
 
 		if(Std.is(displayCut, ItemChangeCut))
 		{
@@ -59,10 +58,12 @@ class Projector
 				cast(displayCut, ItemChangeCut).itemChange
 			);
 		}
-		else if(Std.is(displayCut, EquipedIncorrectItemCut))
-		{
+		else if(
+			Std.is(film, EquipedIncorrectItemFilm) &&
+			cast(film, EquipedIncorrectItemFilm).directionCutIndex == cutIndex
+		){
 			event = ProjectorEvent.EQUIPED_INCORRECT_ITEM(
-				cast(displayCut, EquipedIncorrectItemCut).incorrectItem
+				cast(film, EquipedIncorrectItemFilm).item
 			);
 		}
 
@@ -71,7 +72,7 @@ class Projector
 			switch(displayCut.textDisplayTymingInAction)
 			{
 				case TextDisplayTymingInAction.BEFORE: initializeToPlayText(initializeToPlayAction);
-				case TextDisplayTymingInAction.SAME: initializeToPlayAction();
+				case TextDisplayTymingInAction.SAME: initializeToPlayActionAndText();
 				case TextDisplayTymingInAction.AFTER: initializeToPlayAction();
 			}
 		}
@@ -83,6 +84,15 @@ class Projector
 		{
 			initializeToPlayAction();
 		}
+	}
+
+	//
+	public function isPlaying():Bool
+	{
+		return
+			Reflect.compareMethods(mainFunction, playText) ||
+			Reflect.compareMethods(mainFunction, playAction) ||
+			Reflect.compareMethods(mainFunction, playActionAndText);
 	}
 
 	//
@@ -125,7 +135,7 @@ class Projector
 		{
 			if(displayCut.text == null)
 			{
-				destroyToPlay();
+				initializeToWaitClapperboard();
 			}
 			else
 			{
@@ -163,7 +173,6 @@ class Projector
 	}
 
 	//
-
 	private function initializeToWaitClapperboard()
 	{
 		displayCut.clapperboard.initialize();
@@ -177,9 +186,14 @@ class Projector
 			destroyToPlay();
 		}
 	}
+	public function isWaitingClapperboard():Bool
+	{
+		return Reflect.compareMethods(mainFunction, waitClapperboard);
+	}
+
 	private function destroyToPlay()
 	{
-		if(++cutIndex < cutSet.length){
+		if(++cutIndex < film.cutSet.length){
 			setDisplayCut();
 		}
 		else{

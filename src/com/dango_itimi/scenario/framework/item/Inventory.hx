@@ -38,7 +38,7 @@ class Inventory
 	public function remove(item:Item)
 	{
 		var i = set.length - 1;
-		while(i > 0){
+		while(i >= 0){
 
 			if(set[i] == item){
 				set.splice(i, 1);
@@ -53,13 +53,17 @@ class Inventory
 	}
 	public function exchange(pickedUp:Array<Item>, removed:Array<Item>)
 	{
-		pickupSet(pickedUp);
 		removeSet(removed);
+		pickupSet(pickedUp);
 	}
 	public function select(item:Item)
 	{
 		item.select();
 		equipment = item;
+	}
+	public function selectFromIndex(index:Int)
+	{
+		select(set[index]);
 	}
 	public function unselect(item:Item)
 	{

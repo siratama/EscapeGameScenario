@@ -4,7 +4,7 @@ using com.dango_itimi.utils.MetaUtil;
 
 class Sequence
 {
-	public var scenes(default, null):Array<Scene>;
+	public var sceneSet(default, null):Array<Scene>;
 
 	private static inline var META_SCENE = "scene";
 	//
@@ -17,7 +17,7 @@ class Sequence
 
 	public function new()
 	{
-		scenes = [];
+		sceneSet = [];
 		setExtendedSceneClassPackagesString();
 
 		var metaFieldSet = this.getMetaFieldsWithInstance(META_SCENE);
@@ -27,7 +27,7 @@ class Sequence
 			var sceneClass = getSceneClass(metaFieldName);
 
 			var scene:Scene = Type.createInstance(sceneClass, []);
-			scenes.push(scene);
+			sceneSet.push(scene);
 			Reflect.setProperty(this, metaFieldName, scene);
 		}
 	}
@@ -47,5 +47,36 @@ class Sequence
 		var noteClassName = largeFirstCharacter + metaFieldName.substring(1, metaFieldName.length);
 		var noteClassPath = extendedSceneClassPackagesString + "." + noteClassName;
 		return Type.resolveClass(noteClassPath);
+	}
+}
+
+class SequenceUtil
+{
+	public static function checkOnlyEnabledEventSet(sequence:Sequence, onlyEnabledEventSet:Array<Event>):Bool
+	{
+		var enabledEventSet = getEnabledEventSet(sequence);
+		if(onlyEnabledEventSet.length != enabledEventSet.length) return false;
+
+		for(checkedEvent in onlyEnabledEventSet)
+		{
+			var equals = false;
+			for(enabledEvent in enabledEventSet)
+			{
+				if(checkedEvent != enabledEvent) continue;
+				equals = true;
+				break;
+			}
+			if(!equals) return false;
+		}
+		return true;
+	}
+	public static function getEnabledEventSet(sequence:Sequence):Array<Event>
+	{
+		var enabledEventSet = [];
+		for(scene in sequence.sceneSet)
+			for(event in scene.eventSet)
+				if(event.enabled) enabledEventSet.push(event);
+
+		return enabledEventSet;
 	}
 }

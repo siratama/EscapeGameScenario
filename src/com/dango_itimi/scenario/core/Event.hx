@@ -2,9 +2,6 @@ package com.dango_itimi.scenario.core;
 
 class Event
 {
-	//for click only event(ex: text display)
-	public var endless:Bool;
-
 	public var id(default, null):String;
 	public var enabled(default, null):Bool;
 	private var completed:Bool;
@@ -17,7 +14,6 @@ class Event
 	{
 		this.id = id;
 
-		endless = false;
 		enabled = false;
 		completed = false;
 

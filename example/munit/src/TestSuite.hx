@@ -1,8 +1,9 @@
 import massive.munit.TestSuite;
 
-import haxegame.game.GameTest;
-import haxegame.game.scenario_error.event_order_error.EventOrderErrorTest;
-import haxegame.game.scenario_error.overlapping_area.OverlappingAreaTest;
+import com.dango_itimi.scenario.framework.areamap.Test;
+import com.dango_itimi.scenario.framework.directionmap.Test;
+import com.dango_itimi.scenario.framework.director.Test;
+import haxegame.game.FrameworkTest;
 
 /**
  * Auto generated Test Suite for MassiveUnit.
@@ -16,8 +17,9 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
-		add(haxegame.game.GameTest);
-		add(haxegame.game.scenario_error.event_order_error.EventOrderErrorTest);
-		add(haxegame.game.scenario_error.overlapping_area.OverlappingAreaTest);
+		add(com.dango_itimi.scenario.framework.areamap.Test);
+		add(com.dango_itimi.scenario.framework.directionmap.Test);
+		add(com.dango_itimi.scenario.framework.director.Test);
+		add(haxegame.game.FrameworkTest);
 	}
 }

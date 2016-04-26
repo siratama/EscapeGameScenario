@@ -1,9 +1,11 @@
 result:false
-count:4
-pass:3
-fail:1
+count:12
+pass:9
+fail:3
 error:0
 ignore:0
-time:0.00099945068359375
+time:0.00499916076660156
 
-# haxegame.game.GameTest#testPairOfEventAndDirection
+# haxegame.game.FrameworkTest#testDirectorProgress
+# haxegame.game.FrameworkTest#testPlayingProjectorSkip
+# haxegame.game.FrameworkTest#testProjector

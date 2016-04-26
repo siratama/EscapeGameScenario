@@ -1,17 +1,17 @@
 package com.dango_itimi.scenario.framework.direction;
-import com.dango_itimi.scenario.framework.direction.Cut;
 
+import com.dango_itimi.scenario.framework.direction.Film;
 class Direction
 {
-	public var checked(default, null):Array<Cut>;
-	public var fired(default, null):Array<Cut>;
-	public var equipedIncorrectItem(default, null):Array<Cut>;
+	public var checkedFilm(default, null):CheckedFilm;
+	public var firedFilm(default, null):FiredFilm;
+	public var equipedIncorrectItemFilm(default, null):EquipedIncorrectItemFilm;
 
-	public function new(checked:Array<Cut>, fired:Array<Cut>, equipedIncorrectItem:Array<Cut>)
+	public function new(firedFilm:FiredFilm, checkedFilm:CheckedFilm, equipedIncorrectItemFilm:EquipedIncorrectItemFilm)
 	{
-		this.checked = checked;
-		this.fired = fired;
-		this.equipedIncorrectItem = equipedIncorrectItem;
+		this.firedFilm = firedFilm;
+		this.checkedFilm = checkedFilm;
+		this.equipedIncorrectItemFilm = equipedIncorrectItemFilm;
 	}
 }
 

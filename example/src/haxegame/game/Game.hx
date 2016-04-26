@@ -1,4 +1,8 @@
 package haxegame.game;
+import haxegame.game.scenario.Items;
+import com.dango_itimi.scenario.framework.Appraiser;
+import com.dango_itimi.scenario.framework.Scenario;
+import com.dango_itimi.scenario.framework.area.AreaManager;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
 import com.dango_itimi.scenario.framework.text.TextViewer;
 import com.dango_itimi.scenario.framework.Projector;
@@ -9,9 +13,11 @@ import haxegame.game.scenario.Writer;
 
 class Game
 {
-	private var itemHolder:Inventory;
+	private var items:Items;
+	private var inventory:Inventory;
 	private var directionMap:DirectionMap;
 	private var eventAreaSprite:EventAreaSprite;
+	private var areaManager:AreaManager;
 
 	private var subtitle:Subtitle;
 	private var director:Director;
@@ -22,31 +28,49 @@ class Game
 
 	public function new()
 	{
-		itemHolder = new Inventory();
+		items = new Items();
+		inventory = new Inventory();
 		directionMap = new DirectionMap();
 		eventAreaSprite = new EventAreaSprite();
-
-		scenarioWriter = new Writer(itemHolder, directionMap, eventAreaSprite);
+		areaManager = new AreaManager();
 
 		subtitle = new Subtitle();
-		projector = new Projector(itemHolder, subtitle.textViewer);
-		director = new Director(projector, itemHolder, directionMap);
+		projector = new Projector(subtitle.textViewer);
+		director = new Director(inventory, directionMap, areaManager);
 
-		mainFunction = waitUserControl;
+		scenarioWriter = new Writer(items, inventory, directionMap, eventAreaSprite, areaManager);
+		
+		Appraiser.checkUnsetDirection(scenarioWriter.chapter, directionMap);
+		Appraiser.checkUnsetEventIdInAreaMap(scenarioWriter.chapter, areaManager);
+
+		initializeToWaitUserControl();
 	}
 	public function run()
 	{
 		mainFunction();
 	}
+
+	private function initializeToWaitUserControl()
+	{
+		mainFunction = waitUserControl;
+	}
 	private function waitUserControl()
 	{
-		
-	}
-	private function initializeToProject()
-	{
 		var checkPosition:Point = PointUtil.create(0, 0);
-		director.progress(scenarioWriter.chapter.scene1, checkPosition);
-		mainFunction = project;
+		//Scenario.hasProgressEvent(areaManager, scenarioWriter.chapter.scene1, checkPosition);
+
+		initializeToProject(checkPosition);
+	}
+	private function initializeToProject(checkPosition:Point)
+	{
+		var film = director.progress(scenarioWriter.chapter.scene1, checkPosition);
+		if(film == null)
+			initializeToWaitUserControl();
+		else
+		{
+			projector.initialize(film);
+			mainFunction = project;
+		}
 	}
 	private function project()
 	{
@@ -60,17 +84,18 @@ class Game
 				switch(itemChange)
 				{
 					case ItemChange.PICKED_UP(items):
-						itemHolder.pickupSet(items);
+						inventory.pickupSet(items);
 						//play sound
 					case ItemChange.REMOVED(items):
-						itemHolder.removeSet(items);
+						inventory.removeSet(items);
 						//play sound
 					case ItemChange.EXCHANGED(pickedUp, removed):
-						itemHolder.exchange(pickedUp, removed);
+						inventory.exchange(pickedUp, removed);
 						//play sound
 				}
 			case ProjectorEvent.EQUIPED_INCORRECT_ITEM(incorrectItem):
 				//play sound
+				"";
 
 			case ProjectorEvent.FINISH:
 				mainFunction = waitUserControl;

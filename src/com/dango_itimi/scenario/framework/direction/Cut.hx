@@ -6,23 +6,65 @@ import com.dango_itimi.scenario.framework.text.TextDisplayTymingInAction;
 
 class Cut
 {
-	public var action:ActionInterface;
-	public var text:String;
-	public var textDisplayTymingInAction:TextDisplayTymingInAction;
+	public var clapperboard(default, null):InteractionInterface;
+	public var skipOperation(default, null):InteractionInterface;
 
-	public var skipOperation:InteractionInterface;
-	public var clapperboard:InteractionInterface;
+	public var action(default, null):ActionInterface;
+	public var text(default, null):String;
+	public var textDisplayTymingInAction(default, null):TextDisplayTymingInAction;
 
-	public function new()
-	{
-		textDisplayTymingInAction = TextDisplayTymingInAction.SAME;
+	public function new(
+		clapperboard:InteractionInterface,
+		?skipOperation:InteractionInterface,
+		?action:ActionInterface,
+		?text:String,
+		?textDisplayTymingInAction:TextDisplayTymingInAction
+	){
+		this.clapperboard = clapperboard;
+		this.skipOperation = (skipOperation == null) ? new Interaction(): skipOperation;
+
+		this.action = action;
+		this.text = text;
+		this.textDisplayTymingInAction = textDisplayTymingInAction;
+
+		if(action == null && text == null)
+			throw "set action or text";
+
+		if(text != null && textDisplayTymingInAction == null)
+			this.textDisplayTymingInAction = TextDisplayTymingInAction.SAME;
 	}
 }
 class ItemChangeCut extends Cut
 {
-	public var itemChange:ItemChange;
+	public var itemChange(default, null):ItemChange;
+
+	public function new(
+		itemChange:ItemChange,
+		clapperboard:InteractionInterface,
+		?skipOperation:InteractionInterface,
+		?action:ActionInterface,
+		?text:String,
+		?textDisplayTymingInAction:TextDisplayTymingInAction
+	){
+		this.itemChange = itemChange;
+		super(clapperboard, skipOperation, action, text, textDisplayTymingInAction);
+	}
 }
+/*
 class EquipedIncorrectItemCut extends Cut
 {
-	public var incorrectItem:Item;
+	public var incorrectItem(default, null):Item;
+
+	public function new(
+		incorrectItem:Item,
+		clapperboard:InteractionInterface,
+		?skipOperation:InteractionInterface,
+		?action:ActionInterface,
+		?text:String,
+		?textDisplayTymingInAction:TextDisplayTymingInAction
+	){
+		this.incorrectItem = incorrectItem;
+		super(clapperboard, skipOperation, action, text, textDisplayTymingInAction);
+	}
 }
+*/

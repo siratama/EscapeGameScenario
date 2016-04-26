@@ -6,5 +6,5 @@ interface ActionInterface
 	public function isFinished():Bool;
 
 	//for skip or save record
-	public function playDirect():Void;
+	public function playDirect():Bool;
 }

@@ -1,0 +1,27 @@
+-cp munit/src/
+-cp ./src
+-neko a.n
+-lib munit
+-lib hamcrest
+--no-output
+
+--each
+
+-cp example/src/
+haxegame.game.Game
+--next
+
+com.dango_itimi.scenario.framework.Director
+--next
+
+com.dango_itimi.scenario.framework.Scenario
+--next
+
+com.dango_itimi.scenario.framework.areamap.Test
+--next
+
+com.dango_itimi.scenario.framework.directionmap.Test
+--next
+
+com.dango_itimi.scenario.framework.director.Test
+

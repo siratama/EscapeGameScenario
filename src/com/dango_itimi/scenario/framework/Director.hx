@@ -1,66 +1,65 @@
 package com.dango_itimi.scenario.framework;
 
+import com.dango_itimi.scenario.framework.direction.Film;
+import com.dango_itimi.scenario.framework.area.AreaManager;
 import com.dango_itimi.scenario.framework.item.Item;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
 import com.dango_itimi.scenario.framework.item.Inventory;
-import com.dango_itimi.scenario.framework.direction.Cut;
 import com.dango_itimi.scenario.framework.direction.Direction;
 import com.dango_itimi.scenario.core.Event;
 import com.dango_itimi.scenario.core.Scene;
-import com.dango_itimi.scenario.core.Scenario;
+import com.dango_itimi.scenario.framework.Scenario;
 import com.dango_itimi.geom.Point;
 
 class Director
 {
-	private var projector:Projector;
-	private var itemHolder:Inventory;
+	private var inventory:Inventory;
 	private var directionMap:DirectionMap;
+	private var areaManager:AreaManager;
 
-	public function new(projector:Projector, itemHolder:Inventory, directionMap:DirectionMap)
+	public function new(inventory:Inventory, directionMap:DirectionMap, areaManager:AreaManager)
 	{
-		this.projector = projector;
-		this.itemHolder = itemHolder;
+		this.inventory = inventory;
 		this.directionMap = directionMap;
+		this.areaManager = areaManager;
 	}
 
 	//
-	public function progress(scene:Scene, checkPosition:Point)
+	public function progress(scene:Scene, checkPosition:Point):Film
 	{
-		switch(Scenario.read(scene, checkPosition))
+		switch(Scenario.read(areaManager, scene, checkPosition))
 		{
-			case Progress.NO_HITAREA | Progress.NO_ENABLED_EVENT: return;
+			case Progress.NO_HITAREA | Progress.NO_ENABLED_EVENT:
+				return null;
 
-			case Progress.NONATTAINMENT(event, nonAttainment):
-				orderNonattainment(event);
+			case Progress.UNCOMPLETABLE(event):
+				return orderNonattainment(event);
 
 			case Progress.ADVANCE(complatableEvent):
-				orderAdvance(complatableEvent);
+				return orderAdvance(complatableEvent);
 		}
 	}
-	private function orderNonattainment(event:Event)
+	private function orderNonattainment(event:Event):Film
 	{
 		var direction:Direction = directionMap.get(event);
 
-		for(actions in direction.equipedIncorrectItem)
-		{
-			var incorrectItem = cast(actions, EquipedIncorrectItemCut).incorrectItem;
-			if(event.isRequiredCompletionEvent(incorrectItem) && itemHolder.isSelected(incorrectItem))
-			{
-				projector.initialize(direction.equipedIncorrectItem);
-				return;
-			}
+		if(
+			direction.equipedIncorrectItemFilm != null &&
+			inventory.isSelected(direction.equipedIncorrectItemFilm.item)
+		){
+			return direction.equipedIncorrectItemFilm;
 		}
-
-		if(direction.checked != null){
-			projector.initialize(direction.checked);
+		else if(direction.checkedFilm != null){
+			return direction.checkedFilm;
 		}
+		return null;
 	}
-	private function orderAdvance(event:Event)
+	private function orderAdvance(event:Event):Film
 	{
 		event.complete();
 
 		var direction:Direction = directionMap.get(event);
-		projector.initialize(direction.fired);
+		return direction.firedFilm;
 	}
 }
 

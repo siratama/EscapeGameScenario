@@ -39,10 +39,12 @@ Event には Direction を必ずで設定する必要がある。
 	* true に設定される事で Reader からの検出が可能になる
 		* 同 hitArea(Rectangle) 内に enabled == true の Event が複数検出される場合 Reader はエラーを投げる
 
+/*
 * endless
 	* 実行が完了しない Event である事を示すプロパティ
 	* 例えば、背景オブジェクトをクリックして「これは○○です。」といった、テキストのみを表示したい場合 true に設定する
 	* enabled が true になることで「実行対象にはなるが実行完了は不可」という状態になる
+*/
 
 * completed
 	* Event が実行完了したかどうかを示すプロパティ
@@ -106,6 +108,7 @@ isCompletable() == false はロジックエラーである？
 記録された Event.id から、Event と Direction.fired の取得を行い
 はじめに発火した Event から 最後に発火された Event まで全て再発火処理を行う。
 
+/*
 #### 画面切り替えを一瞬で行うために ActionInterface.playDirect メソッドにも処理を記述する必要あり
 
 Event 発火に伴い、画面の描画の変更が行われる場合があるとする
@@ -120,3 +123,4 @@ ActionInterface.playDirect メソッドを実行する事で[ActionInterface を
 
 ActionInterface.playDirect メソッドは、セーブデータだけではなく
 ユーザがゲーム中に演出を飛ばしたい場合にも利用できる
+*/
