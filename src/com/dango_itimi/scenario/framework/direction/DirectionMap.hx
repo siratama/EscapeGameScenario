@@ -35,7 +35,6 @@ class DirectionMap
 		}
 		return true;
 	}
-
 	public inline function get(event:Event):Direction
 	{
 		return map[event];

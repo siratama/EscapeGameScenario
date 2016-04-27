@@ -3,7 +3,7 @@ package com.dango_itimi.scenario.framework.direction.action;
 class Action implements ActionInterface
 {
 	private static inline var SKIP_PLAY_ROOP_MAX_COUNT:Int = 1000;
-	private var skipPlayRoopMaxCount:Int;
+	public var skipPlayRoopMaxCount(default, null):Int;
 	private var mainFunction:Void->Void;
 
 	public function new(?skipPlayRoopMaxCount:Null<Int>)

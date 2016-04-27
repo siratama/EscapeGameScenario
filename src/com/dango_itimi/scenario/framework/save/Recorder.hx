@@ -1,35 +1,36 @@
 package com.dango_itimi.scenario.framework.save;
 
+import com.dango_itimi.scenario.core.Event;
+
 class Recorder
 {
-	private var record:Record;
-	public function new()
+	public var record(default, null):Record;
+	public function new(loadedRecord:Record)
 	{
-		record = loadRecord();
-		if(record == null)
-			record = {firedEventIdSet: []};
+		record = (loadedRecord == null) ? {firedEventIdSet: []}: loadedRecord;
 	}
-	private function loadRecord():Record
-	{
-		return null;
-	}
-	public function save()
-	{
-		
-	}
-
-	public function addFiredEventId(firedEventId:String)
+	public function add(firedEventId:String)
 	{
 		record.firedEventIdSet.push(firedEventId);
 	}
-	public function isEventNoneError():Bool
+	public function checkSavedEventNullError()
 	{
 		for(eventId in record.firedEventIdSet)
 		{
 			if(Type.resolveClass(eventId) == null)
-				return true;
+				throw eventId + " is not found";
 		}
-		return false;
+	}
+	public function getRecordedEventSet():Array<Event>
+	{
+		var eventSet = [];
+		for(eventId in record.firedEventIdSet)
+		{
+			var eventClass:Class<Event> = Type.resolveClass(eventId);
+			var event:Event = Type.createInstance(eventClass, [eventId]);
+			eventSet.push(event);
+		}
+		return eventSet;
 	}
 }
 

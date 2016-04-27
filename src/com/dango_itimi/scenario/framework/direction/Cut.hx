@@ -53,21 +53,3 @@ class ItemChangeCut extends Cut
 		super(clapperboard, skipOperation, action, text, textDisplayTymingInAction);
 	}
 }
-/*
-class EquipedIncorrectItemCut extends Cut
-{
-	public var incorrectItem(default, null):Item;
-
-	public function new(
-		incorrectItem:Item,
-		clapperboard:InteractionInterface,
-		?skipOperation:InteractionInterface,
-		?action:ActionInterface,
-		?text:String,
-		?textDisplayTymingInAction:TextDisplayTymingInAction
-	){
-		this.incorrectItem = incorrectItem;
-		super(clapperboard, skipOperation, action, text, textDisplayTymingInAction);
-	}
-}
-*/

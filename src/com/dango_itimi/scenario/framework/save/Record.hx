@@ -1,4 +1,5 @@
 package com.dango_itimi.scenario.framework.save;
 typedef Record = {
-	var firedEventIdSet:Array<String>;
+	var firedEventIdSet:Array<Int>;
 }
+
