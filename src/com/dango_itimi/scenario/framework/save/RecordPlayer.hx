@@ -5,9 +5,8 @@ import com.dango_itimi.scenario.framework.item.Inventory;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
 class RecordPlayer
 {
-	public static function play(recorder:Recorder, inventory:Inventory, directionMap:DirectionMap)
+	public static function play(eventSet:Array<Event>, inventory:Inventory, directionMap:DirectionMap)
 	{
-		var eventSet:Array<Event> = recorder.getRecordedEventSet();
 		for(event in eventSet)
 		{
 			var firedFilm = directionMap.get(event).firedFilm;

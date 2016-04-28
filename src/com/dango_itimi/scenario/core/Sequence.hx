@@ -79,4 +79,13 @@ class SequenceUtil
 
 		return enabledEventSet;
 	}
+	public static function getEventMap(sequence:Sequence):Map<String, Event>
+	{
+		var eventMap = new Map();
+		for(scene in sequence.sceneSet)
+			for(event in scene.eventSet)
+				eventMap[event.id] = event;
+
+		return eventMap;
+	}
 }

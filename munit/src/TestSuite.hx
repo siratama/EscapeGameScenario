@@ -4,6 +4,7 @@ import com.dango_itimi.scenario.framework.areamap.Test;
 import com.dango_itimi.scenario.framework.directionmap.Test;
 import com.dango_itimi.scenario.framework.director.Test;
 import com.dango_itimi.scenario.framework.projector.Test;
+import com.dango_itimi.scenario.framework.save.Test;
 
 /**
  * Auto generated Test Suite for MassiveUnit.
@@ -21,5 +22,6 @@ class TestSuite extends massive.munit.TestSuite
 		add(com.dango_itimi.scenario.framework.directionmap.Test);
 		add(com.dango_itimi.scenario.framework.director.Test);
 		add(com.dango_itimi.scenario.framework.projector.Test);
+		add(com.dango_itimi.scenario.framework.save.Test);
 	}
 }

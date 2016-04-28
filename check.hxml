@@ -27,3 +27,6 @@ com.dango_itimi.scenario.framework.director.Test
 --next
 
 com.dango_itimi.scenario.framework.projector.Test
+--next
+
+com.dango_itimi.scenario.framework.save.Test
