@@ -6,7 +6,7 @@ enum TextViewerEvent
 	VIEW(text:String, isSoundTiming:Bool);
 }
 
-class TextViewer
+class Subtitle
 {
 	private var event:TextViewerEvent;
 	public function getEvent():TextViewerEvent {

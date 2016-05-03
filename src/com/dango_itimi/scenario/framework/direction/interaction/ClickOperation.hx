@@ -1,5 +1,5 @@
 package com.dango_itimi.scenario.framework.direction.interaction;
-class ClickChecker extends Interaction
+class ClickOperation extends Interaction
 {
 	public var clicked(null, set):Bool;
 	public function set_clicked(clicked:Bool):Bool

@@ -2,17 +2,22 @@ package com.dango_itimi.scenario.framework;
 
 import com.dango_itimi.scenario.framework.direction.Film;
 import com.dango_itimi.scenario.framework.item.Item;
-import com.dango_itimi.scenario.framework.text.TextViewer;
+import com.dango_itimi.scenario.framework.text.Subtitle;
 import com.dango_itimi.scenario.framework.item.Inventory;
 import com.dango_itimi.scenario.framework.direction.Cut;
-import com.dango_itimi.scenario.framework.text.TextDisplayTymingInAction;
+import com.dango_itimi.scenario.framework.text.SubtitleDisplayTymingInAction;
 
 enum ProjectorEvent
 {
 	NONE;
+	CUT_START(cutStart:CutStart);
+	FINISH;
+}
+enum CutStart
+{
+	NONE;
 	ITEM_CHANGE(itemChange:ItemChange);
 	EQUIPED_INCORRECT_ITEM(item:Item);
-	FINISH;
 }
 
 class Projector
@@ -27,15 +32,15 @@ class Projector
 
 	private var mainFunction:Void->Void;
 	private var nextFunctionAfterPlayText:Void->Void;
-	private var textViewer:TextViewer;
+	private var subtitle:Subtitle;
 
 	private var film:Film;
 	private var cutIndex:Int;
 	public var displayCut(default, null):Cut;
 
-	public function new(textViewer:TextViewer)
+	public function new(subtitle:Subtitle)
 	{
-		this.textViewer = textViewer;
+		this.subtitle = subtitle;
 	}
 	public function run()
 	{
@@ -52,9 +57,10 @@ class Projector
 	{
 		displayCut = film.cutSet[cutIndex];
 
+		var cutStartEvent:CutStart;
 		if(Std.is(displayCut, ItemChangeCut))
 		{
-			event = ProjectorEvent.ITEM_CHANGE(
+			cutStartEvent = CutStart.ITEM_CHANGE(
 				cast(displayCut, ItemChangeCut).itemChange
 			);
 		}
@@ -62,18 +68,22 @@ class Projector
 			Std.is(film, EquipedIncorrectItemFilm) &&
 			cast(film, EquipedIncorrectItemFilm).directionCutIndex == cutIndex
 		){
-			event = ProjectorEvent.EQUIPED_INCORRECT_ITEM(
+			cutStartEvent = CutStart.EQUIPED_INCORRECT_ITEM(
 				cast(film, EquipedIncorrectItemFilm).item
 			);
 		}
+		else
+			cutStartEvent = CutStart.NONE;
+
+		event = ProjectorEvent.CUT_START(cutStartEvent);
 
 		if(displayCut.action != null && displayCut.text != null)
 		{
 			switch(displayCut.textDisplayTymingInAction)
 			{
-				case TextDisplayTymingInAction.BEFORE: initializeToPlayText(initializeToPlayAction);
-				case TextDisplayTymingInAction.SAME: initializeToPlayActionAndText();
-				case TextDisplayTymingInAction.AFTER: initializeToPlayAction();
+				case SubtitleDisplayTymingInAction.BEFORE: initializeToPlayText(initializeToPlayAction);
+				case SubtitleDisplayTymingInAction.SAME: initializeToPlayActionAndText();
+				case SubtitleDisplayTymingInAction.AFTER: initializeToPlayAction();
 			}
 		}
 		else if(displayCut.action == null)
@@ -100,19 +110,19 @@ class Projector
 	{
 		this.nextFunctionAfterPlayText = nextFunctionAfterPlayText;
 
-		textViewer.initialize(displayCut.text);
+		subtitle.initialize(displayCut.text);
 		displayCut.skipOperation.initialize();
 		mainFunction = playText;
 	}
 	private function playText()
 	{
-		textViewer.run();
+		subtitle.run();
 
 		displayCut.skipOperation.run();
 		if(displayCut.skipOperation.isExecuted())
-			textViewer.orderSkip();
+			subtitle.orderSkip();
 
-		if(textViewer.isFinished())
+		if(subtitle.isFinished())
 			nextFunctionAfterPlayText();
 	}
 
@@ -141,7 +151,7 @@ class Projector
 			{
 				switch(displayCut.textDisplayTymingInAction)
 				{
-					case TextDisplayTymingInAction.AFTER: initializeToPlayText(initializeToWaitClapperboard);
+					case SubtitleDisplayTymingInAction.AFTER: initializeToPlayText(initializeToWaitClapperboard);
 					case _: initializeToWaitClapperboard();
 				}
 			}
@@ -152,23 +162,23 @@ class Projector
 	private function initializeToPlayActionAndText()
 	{
 		displayCut.action.initialize();
-		textViewer.initialize(displayCut.text);
+		subtitle.initialize(displayCut.text);
 		displayCut.skipOperation.initialize();
 		mainFunction = playActionAndText;
 	}
 	private function playActionAndText()
 	{
 		displayCut.action.run();
-		textViewer.run();
+		subtitle.run();
 
 		displayCut.skipOperation.run();
 		if(displayCut.skipOperation.isExecuted())
 		{
-			textViewer.orderSkip();
+			subtitle.orderSkip();
 			displayCut.action.playDirect();
 		}
 
-		if(displayCut.action.isFinished() && textViewer.isFinished())
+		if(displayCut.action.isFinished() && subtitle.isFinished())
 			initializeToWaitClapperboard();
 	}
 

@@ -5,7 +5,7 @@ import com.dango_itimi.scenario.framework.direction.interaction.InteractionInter
 import com.dango_itimi.scenario.framework.item.Inventory;
 import com.dango_itimi.scenario.framework.item.Inventory.ItemChange;
 import com.dango_itimi.scenario.framework.item.Item;
-import com.dango_itimi.scenario.framework.text.TextDisplayTymingInAction;
+import com.dango_itimi.scenario.framework.text.SubtitleDisplayTymingInAction;
 
 class Cut
 {
@@ -14,14 +14,14 @@ class Cut
 
 	public var action(default, null):ActionInterface;
 	public var text(default, null):String;
-	public var textDisplayTymingInAction(default, null):TextDisplayTymingInAction;
+	public var textDisplayTymingInAction(default, null):SubtitleDisplayTymingInAction;
 
 	public function new(
 		clapperboard:InteractionInterface,
 		?skipOperation:InteractionInterface,
 		?action:ActionInterface,
 		?text:String,
-		?textDisplayTymingInAction:TextDisplayTymingInAction
+		?textDisplayTymingInAction:SubtitleDisplayTymingInAction
 	){
 		this.clapperboard = clapperboard;
 		this.skipOperation = (skipOperation == null) ? new Interaction(): skipOperation;
@@ -34,7 +34,7 @@ class Cut
 			throw "set action or text";
 
 		if(text != null && textDisplayTymingInAction == null)
-			this.textDisplayTymingInAction = TextDisplayTymingInAction.SAME;
+			this.textDisplayTymingInAction = SubtitleDisplayTymingInAction.SAME;
 	}
 }
 class ItemChangeCut extends Cut
@@ -47,7 +47,7 @@ class ItemChangeCut extends Cut
 		?skipOperation:InteractionInterface,
 		?action:ActionInterface,
 		?text:String,
-		?textDisplayTymingInAction:TextDisplayTymingInAction
+		?textDisplayTymingInAction:SubtitleDisplayTymingInAction
 	){
 		this.itemChange = itemChange;
 		super(clapperboard, skipOperation, action, text, textDisplayTymingInAction);

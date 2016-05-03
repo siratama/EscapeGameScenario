@@ -1,0 +1,18 @@
+-js deploy/js/main.js
+-main haxegame.Main
+-cp ./src
+-cp ../src
+-lib jQueryExtern
+-debug
+
+--next
+
+-cp munit/src/
+-cp ./src
+-cp ../src
+-neko a.n
+-lib munit
+-lib hamcrest
+--no-output
+haxegame.game.Test
+

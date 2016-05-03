@@ -1,5 +1,8 @@
 package com.dango_itimi.scenario.framework.director;
 
+import massive.munit.Assert;
+import com.dango_itimi.scenario.core.Event;
+import com.dango_itimi.scenario.framework.save.Recorder;
 import com.dango_itimi.scenario.framework.item.Item;
 import com.dango_itimi.scenario.framework.direction.Film;
 import com.dango_itimi.scenario.framework.direction.action.Action;
@@ -27,6 +30,7 @@ class Test
 	private var directionMap:DirectionMap;
 	private var areaManager:AreaManager;
 	private var director:Director;
+	private var recorder:Recorder;
 
 	public function new()
 	{
@@ -54,7 +58,8 @@ class Test
 		inventory = new Inventory();
 		directionMap = new DirectionMap();
 		areaManager = new AreaManager();
-		director = new Director(inventory, directionMap, areaManager);
+		recorder = new Recorder(null);
+		director = new Director(inventory, directionMap, areaManager, recorder);
 	}
 
 	@After
@@ -96,6 +101,8 @@ class Test
 		areaManager.set(bedHitArea, chapter.scene1.banana);
 		directionMap.set(chapter.scene1.banana, firedFilm, checkedFilm, equipedIncorrectItemFilm);
 
+		var eventMap:Map<String, Event> = chapter.getEventMap();
+
 		//test
 		Assert.isTrue(chapter.checkOnlyEnabledEventSet([chapter.scene1.apple]));
 
@@ -109,28 +116,42 @@ class Test
 		//fired next event
 		Assert.isTrue(Scenario.hasProgressEvent(areaManager, chapter.scene1, TABLE_POSITION));
 		film = director.progress(chapter.scene1, TABLE_POSITION);
-		Assert.isTrue(film == firedFilm);
+		Assert.areEqual(film, firedFilm);
 		Assert.isTrue(chapter.checkOnlyEnabledEventSet([chapter.scene1.orange]));
+
+		var recordedEventSet = recorder.getRecordedEventSet(eventMap);
+		Assert.areEqual(recordedEventSet.length, 1);
+		Assert.areEqual(recordedEventSet[0], chapter.scene1.apple);
 
 		//gotten firedFilm include ItemChange cut
 		film = director.progress(chapter.scene1, BED_POSITION);
-		Assert.isTrue(film == itemChangeFiredFilm);
+		Assert.areEqual(film, itemChangeFiredFilm);
 		Assert.isTrue(chapter.checkOnlyEnabledEventSet([chapter.scene1.banana]));
+
+		var recordedEventSet = recorder.getRecordedEventSet(eventMap);
+		Assert.areEqual(recordedEventSet.length, 2);
+		Assert.areEqual(recordedEventSet[1], chapter.scene1.orange);
 
 		//gotten checkedFilm
 		film = director.progress(chapter.scene1, BED_POSITION);
-		Assert.isTrue(film == checkedFilm);
+		Assert.areEqual(film, checkedFilm);
 
 		//gotten equipedIncorrectItemFilm
 		inventory.pickup(sword);
 		inventory.select(sword);
 		film = director.progress(chapter.scene1, BED_POSITION);
-		Assert.isTrue(film == equipedIncorrectItemFilm);
+		Assert.areEqual(film, equipedIncorrectItemFilm);
 
 		//gotten firedFilm after gotten checkedFilm and equipedIncorrectItemFilm
 		inventory.pickup(shield);
 		inventory.select(shield);
 		film = director.progress(chapter.scene1, BED_POSITION);
-		Assert.isTrue(film == firedFilm);
+		Assert.areEqual(film, firedFilm);
+
+		var recordedEventSet = recorder.getRecordedEventSet(eventMap);
+		Assert.areEqual(recordedEventSet.length, 3);
+		Assert.areEqual(recordedEventSet[0], chapter.scene1.apple);
+		Assert.areEqual(recordedEventSet[1], chapter.scene1.orange);
+		Assert.areEqual(recordedEventSet[2], chapter.scene1.banana);
 	}
 }

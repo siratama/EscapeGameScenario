@@ -3,9 +3,9 @@ package com.dango_itimi.scenario.framework.projector;
 import massive.munit.Assert;
 import com.dango_itimi.scenario.framework.direction.interaction.Interaction;
 import com.dango_itimi.scenario.framework.direction.action.Sleep;
-import com.dango_itimi.scenario.framework.text.TextViewer;
-import com.dango_itimi.scenario.framework.direction.interaction.ClickChecker;
-import com.dango_itimi.scenario.framework.Projector.ProjectorEvent;
+import com.dango_itimi.scenario.framework.text.Subtitle;
+import com.dango_itimi.scenario.framework.direction.interaction.ClickOperation;
+import com.dango_itimi.scenario.framework.Projector;
 import com.dango_itimi.scenario.framework.item.Item;
 import com.dango_itimi.scenario.framework.direction.Film;
 import com.dango_itimi.scenario.framework.direction.action.Action;
@@ -33,11 +33,11 @@ class Test
 	private var areaManager:AreaManager;
 	private var director:Director;
 	private var projector:Projector;
-	private var textViewer:TextViewer;
+	private var textViewer:Subtitle;
 
 	private var chapter:Chapter;
 	private var items:Items;
-	private var clickChecker:ClickChecker;
+	private var clickChecker:ClickOperation;
 	private var cut:Cut;
 	private var sleepCut:Cut;
 	private var itemPickedUpCut:ItemChangeCut;
@@ -72,14 +72,14 @@ class Test
 		areaManager = new AreaManager();
 		director = new Director(inventory, directionMap, areaManager);
 
-		textViewer = new TextViewer(0, 0);
+		textViewer = new Subtitle(0, 0);
 		projector = new Projector(textViewer);
 
 		chapter = new Chapter();
 		areaManager.register(chapter);
 		items = new Items();
 
-		clickChecker = new ClickChecker();
+		clickChecker = new ClickOperation();
 
 		cut = new Cut(clickChecker, new Action());
 		sleepCut = new Cut(clickChecker, new Interaction(), new Sleep(60));
@@ -107,17 +107,22 @@ class Test
 		while(count > 0)
 		{
 			projector.run();
-			if(projector.isPlaying() && Std.is(projector.displayCut.skipOperation, ClickChecker) && skipDirection)
-				cast(projector.displayCut.skipOperation, ClickChecker).clicked = true;
+			if(projector.isPlaying() && Std.is(projector.displayCut.skipOperation, ClickOperation) && skipDirection)
+				cast(projector.displayCut.skipOperation, ClickOperation).clicked = true;
 
 			else if(projector.isWaitingClapperboard())
-				cast(projector.displayCut.clapperboard, ClickChecker).clicked = true;
+				cast(projector.displayCut.clapperboard, ClickOperation).clicked = true;
 
 			switch(projector.getEvent())
 			{
 				case ProjectorEvent.NONE: "";
-				case ProjectorEvent.ITEM_CHANGE(itemChange): inventory.change(itemChange);
-				case ProjectorEvent.EQUIPED_INCORRECT_ITEM(item): "";
+				case ProjectorEvent.CUT_START(cutStart):
+					switch(cutStart)
+					{
+						case CutStart.NONE: "";
+						case CutStart.ITEM_CHANGE(itemChange): inventory.change(itemChange);
+						case CutStart.EQUIPED_INCORRECT_ITEM(item): "";
+					}
 				case ProjectorEvent.FINISH: break;
 			}
 			count--;

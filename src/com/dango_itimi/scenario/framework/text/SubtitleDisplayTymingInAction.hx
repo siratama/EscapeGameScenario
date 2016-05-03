@@ -1,6 +1,6 @@
 package com.dango_itimi.scenario.framework.text;
 
-enum TextDisplayTymingInAction
+enum SubtitleDisplayTymingInAction
 {
 	SAME;
 	BEFORE;

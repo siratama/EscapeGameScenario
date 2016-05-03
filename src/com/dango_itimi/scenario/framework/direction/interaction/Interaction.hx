@@ -16,7 +16,6 @@ class Interaction implements InteractionInterface
 	}
 	private function watch()
 	{
-		mainFunction = execute;
 	}
 	private function execute(){}
 	public function isExecuted():Bool

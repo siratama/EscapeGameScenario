@@ -2,28 +2,30 @@ package haxegame.game.scenario;
 
 import com.dango_itimi.scenario.framework.direction.Film;
 import com.dango_itimi.scenario.framework.direction.action.Action;
-import com.dango_itimi.scenario.framework.direction.interaction.ClickChecker;
+import com.dango_itimi.scenario.framework.direction.interaction.ClickOperation;
 import com.dango_itimi.scenario.framework.area.AreaManager;
 import com.dango_itimi.scenario.framework.direction.DirectionMap;
 import com.dango_itimi.scenario.framework.direction.Cut;
 import com.dango_itimi.scenario.framework.item.Inventory;
 import com.dango_itimi.scenario.core.Event;
-import haxegame.game.EventAreaSprite;
+import haxegame.game.area.EventAreas;
 
 class Episode
 {
 	public var chapter(null, default):Chapter;
 	public var items(null, default):Items;
 	public var inventory(null, default):Inventory;
-	public var eventAreaSprite(null, default):EventAreaSprite;
+	public var eventAreas(null, default):EventAreas;
 	public var directionMap(null, default):DirectionMap;
 	public var areaManager(null, default):AreaManager;
-	
-	private var clickChecker:ClickChecker;
+	public var actions(null, default):Actions;
+	public var interactions(null, default):Interactions;
+
+	private var clickOperation:ClickOperation;
 
 	public function new()
 	{
-		clickChecker = new ClickChecker();
+		clickOperation = new ClickOperation();
 	}
 	public function write(){}
 }
@@ -40,11 +42,12 @@ class Episode1 extends Episode
 	{
 		var event = chapter.scene1.apple;
 		event.enable();
-		areaManager.set(eventAreaSprite.table, event);
+		areaManager.set(eventAreas.table, event);
 
 		var cut = new Cut(
-			clickChecker,
-			new Action()
+			clickOperation,
+			new Action(),
+			"おはよう"
 		);
 		var firedFilm = new FiredFilm(cut);
 
@@ -56,13 +59,13 @@ class Episode1 extends Episode
 	private function setOrange()
 	{
 		var event = chapter.scene1.orange;
-		areaManager.set(eventAreaSprite.table, event);
+		areaManager.set(eventAreas.table, event);
 
 		event.enabledEventsAfterCompletion = [chapter.scene1.banana];
 
 		var itemChangeCut = new ItemChangeCut(
 			ItemChange.PICKED_UP([items.sword]),
-			clickChecker,
+			clickOperation,
 			"You got a " + items.sword.name
 		);
 		var firedFilm = new FiredFilm(itemChangeCut);
@@ -72,14 +75,14 @@ class Episode1 extends Episode
 	private function setBanana()
 	{
 		var event = chapter.scene1.banana;
-		areaManager.set(eventAreaSprite.bed, event);
+		areaManager.set(eventAreas.bed, event);
 
 		event.requiredCompletionEvents = [items.sword];
 		event.enabledEventsAfterCompletion = [chapter.scene1.apple, chapter.scene2.table];
 
 		var itemChangeCut = new ItemChangeCut(
 			ItemChange.EXCHANGED([items.shield], [items.sword]),
-			clickChecker,
+			clickOperation,
 			"You used a " + items.sword.name
 		);
 		var firedFilm = new FiredFilm(itemChangeCut);
@@ -98,18 +101,19 @@ class Episode2 extends Episode
 	{
 		var event = chapter.scene2.table;
 		event.enable();
-		areaManager.set(eventAreaSprite.table, event);
+		areaManager.set(eventAreas.table, event);
 
+		event.requiredCompletionEvents = [items.sword];
 		event.enabledEventsAfterCompletion = [chapter.scene2.bed];
 
 		var cut = new Cut(
-			clickChecker,
+			clickOperation,
 			new Action()
 		);
 		var firedFilm = new FiredFilm(cut);
 
 		var cut = new Cut(
-			clickChecker,
+			clickOperation,
 			new Action()
 		);
 		var equipedIncorrectItemFilm = new EquipedIncorrectItemFilm(cut, items.shield, 0);
@@ -119,17 +123,17 @@ class Episode2 extends Episode
 	private function setBed()
 	{
 		var event = chapter.scene2.bed;
-		areaManager.set(eventAreaSprite.bed, event);
+		areaManager.set(eventAreas.bed, event);
 
 		event.requiredCompletionEvents = [items.shield];
 
 		var itemChangeCut = new ItemChangeCut(
 			ItemChange.REMOVED([items.shield]),
-			clickChecker,
+			clickOperation,
 			"You used a " + items.shield.name
 		);
 		var cut = new Cut(
-			clickChecker,
+			clickOperation,
 			new Action()
 		);
 		var firedFilm = new FiredFilm(itemChangeCut);

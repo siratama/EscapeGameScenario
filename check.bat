@@ -1,0 +1,2 @@
+check.hxml
+example\compile_no_output.hxml

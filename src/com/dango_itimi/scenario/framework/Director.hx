@@ -1,5 +1,6 @@
 package com.dango_itimi.scenario.framework;
 
+import com.dango_itimi.scenario.framework.save.Recorder;
 import com.dango_itimi.scenario.framework.direction.Film;
 import com.dango_itimi.scenario.framework.area.AreaManager;
 import com.dango_itimi.scenario.framework.item.Item;
@@ -16,12 +17,14 @@ class Director
 	private var inventory:Inventory;
 	private var directionMap:DirectionMap;
 	private var areaManager:AreaManager;
+	private var recorder:Recorder;
 
-	public function new(inventory:Inventory, directionMap:DirectionMap, areaManager:AreaManager)
+	public function new(inventory:Inventory, directionMap:DirectionMap, areaManager:AreaManager, ?recorder:Recorder)
 	{
 		this.inventory = inventory;
 		this.directionMap = directionMap;
 		this.areaManager = areaManager;
+		this.recorder = recorder;
 	}
 
 	//
@@ -57,6 +60,7 @@ class Director
 	private function orderAdvance(event:Event):Film
 	{
 		event.complete();
+		if(recorder != null) recorder.add(event.id);
 
 		var direction:Direction = directionMap.get(event);
 		return direction.firedFilm;
